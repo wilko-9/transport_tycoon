@@ -9,7 +9,7 @@ def is_input_validation(inp) -> bool:
 
 def main_menu_input_handler(inp) -> str:
     inp = inp.lower()
-    if not input_validation(inp):
+    if not is_input_validation(inp):
         main_menu_input_handler(
             input("please dont use any spaces or special charcters\n")
         )
