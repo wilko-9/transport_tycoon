@@ -17,6 +17,16 @@ def main_menu_input_handler(inp) -> str:
         case "q":
             print("quiting\n")
             return "q"
+        case "0" | "help":
+            return "help"
+        case "1" | "city":
+            return "city"
+        case "2" | "station":
+            return "station"
+        case "3" | "train":
+            return "train"
+        case "4" | "route":
+            return "route"
         case _:
             inp = main_menu_input_handler(input
                                           ("please pick on of our optiions\n")
