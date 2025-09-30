@@ -1,4 +1,4 @@
-def input_validation(inp) -> bool:
+def is_input_validation(inp) -> bool:
     for c in inp:
         if c.isdigit() or c.isalpha():
             continue
