@@ -12,3 +12,19 @@ def StationsData():
         }
     }
     return stations
+
+
+def routesData():
+    routes = {
+        "0": {
+            "name": "test1",
+            "expectedPeople": 100,
+            "amountOfTrains": 1,
+        },
+        "1": {
+            "name": "test2",
+            "expectedPeople": 50,
+            "amountOfTrains": 2,
+        }
+    }
+    return routes

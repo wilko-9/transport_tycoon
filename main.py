@@ -1,6 +1,6 @@
-from data import StationsData
+import data
 from station import stations_menu
-
+from route import routes_menu
 
 def is_input_validation(inp) -> bool:
     for c in inp:
@@ -26,11 +26,12 @@ def main_menu_input_handler(inp) -> str:
         case "1" | "city":
             return "city"
         case "2" | "station":
-            stations_menu(StationsData())
+            stations_menu(data.StationsData())
             return "station"
         case "3" | "train":
             return "train"
         case "4" | "route":
+            routes_menu(data.routesData())
             return "route"
         case _:
             inp = main_menu_input_handler(input
