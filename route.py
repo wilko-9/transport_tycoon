@@ -1,5 +1,5 @@
 def routes_menu(routs):
-    print("stations")
+    print("routes:")
     total = 0
     for rout in routs.values():
         print(f"""{rout["name"]} \t | {rout["expectedPeople"]} \t |  {rout["amountOfTrains"]} """)

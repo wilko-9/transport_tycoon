@@ -28,3 +28,23 @@ def routesData():
         }
     }
     return routes
+
+
+def trainsData():
+    trains = {
+        "0": {
+            "name": "test1",
+            "maxCapacity": 800,
+            "CurrentPeople": 400,
+            "percentageRoute": 40,
+            "passengerCars": 20,
+        },
+        "1": {
+            "name": "test1",
+            "maxCapacity": 1600,
+            "CurrentPeople": 800,
+            "percentageRoute": 80,
+            "passengerCars": 40,
+        }
+    }
+    return trains
