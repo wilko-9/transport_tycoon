@@ -1,7 +1,7 @@
 def trains_menu(trains):
     print("trains:")
     for train in trains.values():
-        print(f"""{train["name"]} \t | {train["CurrentPeople"]}/{train["maxCapacity"]} \t |  {train["percentageRoute"]}% \t |  {train["passengerCars"]} """)
+        print(f"""{train["name"]} \t | {train["CurrentPeople"]}/{train["maxCapacity"]} \t | {train["currentRout"]} {train["percentageRoute"]}% \t |  {train["passengerCars"]} """)
     print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")
 
     inp = input()

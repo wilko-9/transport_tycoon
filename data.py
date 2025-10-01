@@ -36,6 +36,7 @@ def trainsData():
             "name": "test1",
             "maxCapacity": 800,
             "CurrentPeople": 400,
+            "currentRout": routesData()["0"]["name"],
             "percentageRoute": 40,
             "passengerCars": 20,
         },
@@ -43,6 +44,7 @@ def trainsData():
             "name": "test1",
             "maxCapacity": 1600,
             "CurrentPeople": 800,
+            "currentRout": routesData()["1"]["name"],
             "percentageRoute": 80,
             "passengerCars": 40,
         }
