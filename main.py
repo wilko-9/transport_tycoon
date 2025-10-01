@@ -1,3 +1,6 @@
+from data import StationsData
+
+
 def is_input_validation(inp) -> bool:
     for c in inp:
         if c.isdigit() or c.isalpha():
@@ -5,6 +8,13 @@ def is_input_validation(inp) -> bool:
         else:
             return False
     return True
+
+
+def stations_menu(stations):
+    print("stations")
+    for station in stations.values():
+        print(f"""{station["name"]} \t | {station["expectedPeople"]} \t |  {station["amountOfRoutes"]} """)
+    print("Type 'q' to go back| 1 or \"add\" add | 2 or \"edit\" to edit  | 3 or \"delete\" to delete")
 
 
 def main_menu_input_handler(inp) -> str:
@@ -22,6 +32,7 @@ def main_menu_input_handler(inp) -> str:
         case "1" | "city":
             return "city"
         case "2" | "station":
+            stations_menu(StationsData())
             return "station"
         case "3" | "train":
             return "train"
@@ -36,8 +47,8 @@ def main_menu_input_handler(inp) -> str:
 
 def main():
     while True:
-        test = main_menu_input_handler(input("pick a input\n"))
-        if test == "q":
+        menu = main_menu_input_handler(input("pick a input\n"))
+        if menu == "q":
             break
 
 
