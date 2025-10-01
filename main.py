@@ -1,4 +1,5 @@
 from data import StationsData
+from station import stations_menu
 
 
 def is_input_validation(inp) -> bool:
@@ -8,13 +9,6 @@ def is_input_validation(inp) -> bool:
         else:
             return False
     return True
-
-
-def stations_menu(stations):
-    print("stations")
-    for station in stations.values():
-        print(f"""{station["name"]} \t | {station["expectedPeople"]} \t |  {station["amountOfRoutes"]} """)
-    print("Type 'q' to go back| 1 or \"add\" add | 2 or \"edit\" to edit  | 3 or \"delete\" to delete")
 
 
 def main_menu_input_handler(inp) -> str:
