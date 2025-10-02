@@ -20,11 +20,13 @@ def routesData():
             "name": "test1",
             "expectedPeople": 100,
             "amountOfTrains": 1,
+            "trains": [0],
         },
         "1": {
             "name": "test2",
             "expectedPeople": 50,
             "amountOfTrains": 2,
+            "trains": [1],
         }
     }
     return routes
@@ -36,7 +38,7 @@ def trainsData():
             "name": "test1",
             "maxCapacity": 800,
             "CurrentPeople": 400,
-            "currentRout": routesData()["0"]["name"],
+            "currentRoutId": "0",
             "percentageRoute": 40,
             "passengerCars": 20,
         },
@@ -44,7 +46,7 @@ def trainsData():
             "name": "test1",
             "maxCapacity": 1600,
             "CurrentPeople": 800,
-            "currentRout": routesData()["1"]["name"],
+            "currentRoutId": "1",
             "percentageRoute": 80,
             "passengerCars": 40,
         }
