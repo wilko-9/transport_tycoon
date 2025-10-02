@@ -14,7 +14,7 @@ def is_input_validation(inp) -> bool:
     return True
 
 
-def main_menu_input_handler(inp) -> str:
+def main_menu_input_handler(inp):
     inp = inp.lower()
     if not is_input_validation(inp):
         main_menu_input_handler(
@@ -25,23 +25,20 @@ def main_menu_input_handler(inp) -> str:
             print("quiting\n")
             return "q"
         case "0" | "help":
-            return "help"
+            help()
         case "1" | "city":
-            return "city"
+            global cityData
+            cities.cities_menu(cityData)
         case "2" | "station":
             stations_menu(data.stations_data())
-            return "station"
         case "3" | "train":
             trains_menu(data.trains_data())
-            return "train"
         case "4" | "route":
             routes_menu(data.routes_data())
-            return "route"
         case _:
             inp = main_menu_input_handler(input
                                           ("please pick on of our optiions\n")
                                           )
-            return inp
 
 def help():
     print("This is the list of all commands")
@@ -55,6 +52,8 @@ def help():
     return main_menu_input_handler(input("pick a input"))
 
 def main():
+    global cityData
+
     days = 0
     money = 5000
     cityData = data.city_data()
