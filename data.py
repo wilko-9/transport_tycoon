@@ -19,13 +19,11 @@ def routesData():
         "0": {
             "name": "test1",
             "expectedPeople": 100,
-            "amountOfTrains": 1,
             "trains": [0],
         },
         "1": {
             "name": "test2",
             "expectedPeople": 50,
-            "amountOfTrains": 2,
             "trains": [1],
         }
     }

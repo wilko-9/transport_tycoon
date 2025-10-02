@@ -1,9 +1,9 @@
 def routes_menu(routs):
     print("routes:")
     total = 0
-    for rout in routs.values():
-        print(f"""{rout["name"]} \t | {rout["expectedPeople"]} \t |  {rout["amountOfTrains"]} """)
-        total += rout["expectedPeople"]
+    for route in routs.values():
+        print(f"""{route["name"]} \t | {route["expectedPeople"]} \t |  {len(route["trains"])} """)
+        total += route["expectedPeople"]
     print(f"{total} total passangers")
     print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")
 
