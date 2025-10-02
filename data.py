@@ -50,3 +50,33 @@ def trains_data():
         }
     }
     return trains
+
+def city_data():
+    cities = {
+        "0" : {
+            "name" : "test",
+            "population" : 10000,
+            "hasStation" : True
+        },
+        "1" : {
+            "name" : "test1",
+            "population" : 10000,
+            "hasStation" : True
+        },
+        "2" : {
+            "name" : "test2",
+            "population" : 10000,
+            "hasStation" : True
+        },
+        "3" : {
+            "name" : "test3",
+            "population" : 10000,
+            "hasStation" : True
+        },
+        "4" : {
+            "name" : "test4",
+            "population" : 10000,
+            "hasStation" : True
+        }
+    }
+    return cities
