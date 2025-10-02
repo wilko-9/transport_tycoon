@@ -3,11 +3,13 @@ def stations_data():
         "0": {
             "name": "test1",
             "waitingPassangers": 50,
+            "cityId": "0",
             "amountOfRoutes": 1,
         },
         "1": {
             "name": "test2",
             "waitingPassangers": 50,
+            "cityId": "2",
             "amountOfRoutes": 2,
         }
     }
@@ -50,6 +52,7 @@ def trains_data():
         }
     }
     return trains
+
 
 def city_data():
     cities = {
