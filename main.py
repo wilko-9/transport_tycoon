@@ -2,6 +2,7 @@ import data
 from station import stations_menu
 from route import routes_menu
 from trains import trains_menu
+from cities import cities_menu
 
 
 def is_input_validation(inp) -> bool:
@@ -41,6 +42,17 @@ def main_menu_input_handler(inp) -> str:
                                           ("please pick on of our optiions\n")
                                           )
             return inp
+
+def help():
+    print("This is the list of all commands")
+    print("0 | Help | Lists all commands")
+    print("1 | Cities | Opens the cities menu")
+    print("2 | Stations | Opens the stations menu")
+    print("3 | Routes | Opens the routes menu")
+    print("4 | Trains | Opens the trains menu")
+    print("Q | Quit | Quits the game or the current menu")
+
+    return main_menu_input_handler(input("pick a input"))
 
 
 def main():
