@@ -31,7 +31,7 @@ def main_menu_input_handler(inp, city):
         case "1" | "city":
             cities.cities_menu(cityData)
         case "2" | "station":
-            stations_menu(data.stations_data(), city)
+            stations_menu(stationData, cityData)
             return "station"
         case "3" | "train":
             trains_menu(data.trains_data())

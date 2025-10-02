@@ -4,7 +4,8 @@ from data import city_data
 def stations_menu(stations, city):
     print("stations")
     for station in stations.values():
-        print(f"""{station["name"]} \t | {station["waitingPassangers"]} \t |  {station["amountOfRoutes"]} """)
+        print(
+            f"""station name: {station["name"]} \t | waiting passangers: {station["waitingPassangers"]} \t | amount of routes:{station["amountOfRoutes"]} """)
     print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")
 
     inp = input()
@@ -17,9 +18,9 @@ def stations_menu(stations, city):
         case "2" | "edit":
             edit_station()
         case "3" | "delete":
-            delete_station(stations)
+            delete_station(stations, city)
         case _:
-            stations_menu(stations)
+            stations_menu(stations, city)
 
 
 def add_station(stations, city):
@@ -63,5 +64,25 @@ def edit_station():
     print("station has been edited")
 
 
-def delete_station(stations):
-    pass
+def delete_station(stations, city):
+    listOfStations = []
+    for station in stations:
+        listOfStations.append(station)
+        print(f"index: {station} \t | station name: {stations[station]["name"]}")
+    inp = input("give a station index to delete\n")
+    if inp == "q":
+        pass
+    elif not inp.isdigit():
+        print("please give a proper index\n")
+        delete_station(stations, city)
+    else:
+        the_city = str(stations[listOfStations[int(inp)]]["cityId"])
+        city.update({
+            the_city: {
+                "name": city[the_city]["name"],
+                "population":  city[the_city]["population"],
+                "hasStation": False,
+            }})
+        stations.pop(inp)
+        print("station deleted \n")
+        return stations, city
