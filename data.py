@@ -2,12 +2,12 @@ def stations_data():
     stations = {
         "0": {
             "name": "test1",
-            "expectedPeople": 100,
+            "waitingPassangers": 50,
             "amountOfRoutes": 1,
         },
         "1": {
             "name": "test2",
-            "expectedPeople": 50,
+            "waitingPassangers": 50,
             "amountOfRoutes": 2,
         }
     }
@@ -56,27 +56,28 @@ def city_data():
         "0" : {
             "name" : "test",
             "population" : 10000,
-            "hasStation" : True
+            "hasStation" : True,
+            "station" : "0"
         },
         "1" : {
             "name" : "test1",
             "population" : 10000,
-            "hasStation" : True
+            "hasStation" : False
         },
         "2" : {
             "name" : "test2",
             "population" : 10000,
-            "hasStation" : True
+            "hasStation" : False
         },
         "3" : {
             "name" : "test3",
             "population" : 10000,
-            "hasStation" : True
+            "hasStation" : False
         },
         "4" : {
             "name" : "test4",
             "population" : 10000,
-            "hasStation" : True
+            "hasStation" : False
         }
     }
     return cities
