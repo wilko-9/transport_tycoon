@@ -14,7 +14,7 @@ def is_input_validation(inp) -> bool:
     return True
 
 
-def main_menu_input_handler(inp) -> str:
+def main_menu_input_handler(inp, city):
     inp = inp.lower()
     if not is_input_validation(inp):
         main_menu_input_handler(
@@ -29,7 +29,7 @@ def main_menu_input_handler(inp) -> str:
         case "1" | "city":
             return "city"
         case "2" | "station":
-            stations_menu(data.stations_data())
+            stations_menu(data.stations_data(), city)
             return "station"
         case "3" | "train":
             trains_menu(data.trains_data())
@@ -63,7 +63,7 @@ def main():
         menu = main_menu_input_handler(input(f"""
 money: ??? trains: {len(data.trains_data())} stations: {len(data.stations_data())} routes: {len(data.routes_data())}
 new action:
-"""))
+"""), cityData)
         if menu == "q":
             break
 

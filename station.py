@@ -1,7 +1,7 @@
 from data import city_data
 
 
-def stations_menu(stations):
+def stations_menu(stations, city):
     print("stations")
     for station in stations.values():
         print(f"""{station["name"]} \t | {station["expectedPeople"]} \t |  {station["amountOfRoutes"]} """)
@@ -13,7 +13,7 @@ def stations_menu(stations):
         case "q":
             pass
         case "1" | "add":
-            add_station(stations)
+            add_station(stations, city)
         case "2" | "edit":
             edit_station()
         case "3" | "delete":
@@ -22,24 +22,23 @@ def stations_menu(stations):
             stations_menu(stations)
 
 
-def add_station(stations):
+def add_station(stations, city):
     cityNoStation = []
     index = 0
-    for city in city_data():
-        if not city_data()[city]["hasStation"]:
-            cityNoStation.append(city)
-            print(f"index {index} {str(city_data()[city]["name"])}")
+    for cityI in city_data():
+        if not city_data()[cityI]["hasStation"]:
+            cityNoStation.append(cityI)
+            print(f"index {index} {str(city_data()[cityI]["name"])}")
             index += 1
     inp = input("please select a index\n")
     if inp == "q":
         pass
     elif not inp.isdigit():
         print("please chose a proper option")
-        add_station()
+        add_station(stations, city)
     elif int(inp) < len(cityNoStation):
-        cityId = 0
+        cityId = cityNoStation[int(inp)]
         StationsAmmount = int(list(stations)[-1]) + 1
-        print(cityNoStation[int(inp)])
         name = 'test' + str(StationsAmmount)
         stations.update({
             StationsAmmount: {
@@ -48,10 +47,16 @@ def add_station(stations):
                 "expectedPeople": 100,
                 "amountOfRoutes": 1,
             }})
-        return stations
+        city.update({
+            cityId: {
+                "name": city[cityNoStation[int(inp)]]["name"],
+                "population":  city[cityNoStation[int(inp)]]["population"],
+                "hasStation": True,
+            }})
+        return stations, city
     else:
         print("please chose a proper option")
-        add_station()
+        add_station(stations, city)
 
 
 def edit_station():

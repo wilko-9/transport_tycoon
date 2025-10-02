@@ -14,7 +14,6 @@ def cities_menu(cities):
         case _:
             cities_menu(cities)
 
-
 def new_city(cities):
     cityAmmount = len(cities)
     name = 'test' + str(cityAmmount)
