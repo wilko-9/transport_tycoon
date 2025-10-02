@@ -45,7 +45,10 @@ def main_menu_input_handler(inp) -> str:
 
 def main():
     while True:
-        menu = main_menu_input_handler(input("pick a input\n"))
+        menu = main_menu_input_handler(input(f"""
+money: ??? trains: {len(data.trainsData())} stations: {len(data.StationsData())} routes: {len(data.routesData())}
+new action:
+"""))
         if menu == "q":
             break
 
