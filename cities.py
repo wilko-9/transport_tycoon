@@ -1,3 +1,5 @@
+import random
+
 def cities_menu(cities):
     for city in cities.values():
         if city["hasStation"]:
@@ -18,13 +20,13 @@ def cities_menu(cities):
 def new_city(cities):
     cityAmmount = len(cities)
     name = 'test' + str(cityAmmount)
-    population = range(5000, 50000)
-    cities.add({
+    population = random.randint(5000,50000)
+    cities.update({
         cityAmmount: {
             "name": name,
             "population": population,
             "hasStation": False
         }
     })
-    
+    print(f"A new city with the name {name} has been founded! It has a population of {population} people")
     return cities
