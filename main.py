@@ -1,8 +1,8 @@
 import data
+import cities
 from station import stations_menu
 from route import routes_menu
 from trains import trains_menu
-from cities import cities_menu
 
 
 def is_input_validation(inp) -> bool:
@@ -54,9 +54,12 @@ def help():
 
     return main_menu_input_handler(input("pick a input"))
 
-
 def main():
-    while True:
+    days = 0
+    money = 5000
+    cityData = data.city_data()
+    while money > -10000:
+        days += 1
         menu = main_menu_input_handler(input(f"""
 money: ??? trains: {len(data.trains_data())} stations: {len(data.stations_data())} routes: {len(data.routes_data())}
 new action:
@@ -64,5 +67,10 @@ new action:
         if menu == "q":
             break
 
+        if range(0, 51) == 1:
+            cityData = cities.new_city(cityData)
+    
+    print("You ran out of money!")
+    print("Game Over")
 
 main()
