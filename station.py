@@ -5,7 +5,7 @@ def stations_menu(stations, city):
     print("stations")
     for station in stations.values():
         print(
-            f"""station name: {station["name"]} \t | waiting passangers: {station["waitingPassangers"]} \t | amount of routes:{station["amountOfRoutes"]} """)
+            f"""station name: {station["name"]} \t | waiting passangers: {station["waitingPassangers"]} \t | amount of routes:{station["amountOfRoutes"]} | age: {station["age"]}""")
     print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")
 
     inp = input()

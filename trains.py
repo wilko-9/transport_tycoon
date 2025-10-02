@@ -7,14 +7,14 @@ def trains_menu(trains):
             route = "This train is not assigned to a route"
         else:
             route = routes_data()[str(train["currentRouteId"])]["name"]
-        print(f"""ID: {train_id} | name: {train["name"]} \t | passangers: {train["CurrentPeople"]}/{train["maxCapacity"]} \t | route: {route} {train["percentageRoute"]}% \t |  cars: {train["passengerCars"]} """)
+        print(f"""ID: {train_id} | name: {train["name"]} \t | passangers: {train["CurrentPeople"]}/{train["maxCapacity"]} \t | route: {route} {train["percentageRoute"]}% \t |  cars: {train["passengerCars"]} | age: {train["age"]}""")
     print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")
 
     inp = input()
 
     match inp:
         case "q":
-            pass
+            return trains
         case "1" | "add":
             return add_train(trains)
         case "2" | "edit":
@@ -45,6 +45,7 @@ def add_train(trains):
             "currentRouteId": routeId,
             "percentageRoute": 0,
             "passengerCars": passengerCars,
+            "age" : 0
         }
     })
     return trains

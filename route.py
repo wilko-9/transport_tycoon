@@ -2,7 +2,7 @@ def routes_menu(routs):
     print("routes:")
     total = 0
     for route in routs.values():
-        print(f"""{route["name"]} \t | {route["expectedPeople"]} \t |  {len(route["trains"])} """)
+        print(f"""{route["name"]} \t | {route["expectedPeople"]} \t |  {len(route["trains"])} | age: {route["age"]} """)
         total += route["expectedPeople"]
     print(f"{total} total passangers")
     print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")

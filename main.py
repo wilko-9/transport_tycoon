@@ -1,6 +1,7 @@
 import data
 import cities
 import passangers
+import economy
 from station import stations_menu
 from route import routes_menu
 from trains import trains_menu
@@ -38,7 +39,7 @@ def main_menu_input_handler(inp):
             global trainData
             trainData = trains_menu(trainData)
         case "4" | "route":
-            routes_menu(data.routes_data())
+            routes_menu(routeData)
         case _:
             inp = main_menu_input_handler(input
                                           ("please pick on of our optiions\n")
@@ -49,8 +50,8 @@ def help():
     print("0 | Help | Lists all commands")
     print("1 | Cities | Opens the cities menu")
     print("2 | Stations | Opens the stations menu")
-    print("3 | Routes | Opens the routes menu")
-    print("4 | Trains | Opens the trains menu")
+    print("3 | Trains | Opens the trains menu")
+    print("4 | Routes | Opens the routes menu")
     print("Q | Quit | Quits the game or the current menu")
 
     return main_menu_input_handler(input("pick a input"))
@@ -59,12 +60,14 @@ def main():
     global cityData
     global stationData
     global trainData
+    global routeData
 
     days = 0
     money = 5000
     cityData = data.city_data()
     stationData = data.stations_data()
     trainData = data.trains_data()
+    routeData = data.routes_data()
     while money > -10000:
         days += 1
         menu = main_menu_input_handler(input(f"""
@@ -78,8 +81,11 @@ new action:
             cityData = cities.new_city(cityData)
         
         stationData = passangers.spawn_passangers(cityData, stationData)
-        # print(stationData)
-    
+        
+        maintenance = economy.maintenance(stationData, trainData, routeData)
+        money -= maintenance
+        print(f"Your maintenance cost today was {maintenance}")
+
     print("You ran out of money!")
     print("Game Over")
 

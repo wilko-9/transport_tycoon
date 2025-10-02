@@ -5,12 +5,14 @@ def stations_data():
             "waitingPassangers": 50,
             "cityId": "0",
             "amountOfRoutes": 1,
+            "age" : 0
         },
         "1": {
             "name": "test2",
             "waitingPassangers": 50,
             "cityId": "2",
             "amountOfRoutes": 2,
+            "age" : 0
         }
     }
     return stations
@@ -22,11 +24,13 @@ def routes_data():
             "name": "test1",
             "expectedPeople": 100,
             "trains": [0],
+            "age" : 0
         },
         "1": {
             "name": "test2",
             "expectedPeople": 50,
             "trains": [1],
+            "age" : 0
         }
     }
     return routes
@@ -41,6 +45,7 @@ def trains_data():
             "currentRouteId": 0,
             "percentageRoute": 40,
             "passengerCars": 20,
+            "age" : 0
         },
         "1": {
             "name": "test1",
@@ -49,6 +54,7 @@ def trains_data():
             "currentRouteId": 1,
             "percentageRoute": 80,
             "passengerCars": 40,
+            "age" : 0
         }
     }
     return trains
