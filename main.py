@@ -37,7 +37,7 @@ def main_menu_input_handler(inp):
         case "3" | "train":
             trains_menu(data.trains_data())
         case "4" | "route":
-            routes_menu(data.routes_data(), stationData)
+            routes_menu(routsData, stationData)
         case _:
             inp = main_menu_input_handler(input
                                           ("please pick on of our optiions\n")
@@ -59,11 +59,13 @@ def help():
 def main():
     global cityData
     global stationData
+    global routsData
 
     days = 0
     money = 5000
     cityData = data.city_data()
     stationData = data.stations_data()
+    routsData = data.routes_data()
     while money > -10000:
         days += 1
         menu = main_menu_input_handler(input(f"""

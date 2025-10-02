@@ -2,7 +2,7 @@ def routes_menu(routs, stations):
     print("routes:")
     total = 0
     for route in routs.values():
-        print(f"""{route["name"]} \t | {route["expectedPeople"]} \t |  {len(route["trains"])} """)
+        print(f"{route['name']:<31} | {route['expectedPeople']:>10} | {len(route['trains']):>5}")
         total += route["expectedPeople"]
     print(f"{total} total passangers")
     print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")
@@ -43,12 +43,13 @@ def add_rout(routs, stations):
             add_station_list.append(complete_station_list[int(inp)])
             print("station has been added")
     routsAmmount = int(list(routs)[-1]) + 1
+    name = "route " + str(routsAmmount)
     routs.update({
         routsAmmount: {
-            "name": "test1",
+            "name": name,
             "expectedPeople": 100,
             "stations": add_station_list,
-            "trains": [0],
+            "trains": [],
         }
     })
     print("rout has been added")
