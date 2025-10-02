@@ -2,11 +2,13 @@ def stations_data():
     stations = {
         "0": {
             "name": "test1",
+            "cityId": "0",
             "expectedPeople": 100,
             "amountOfRoutes": 1,
         },
         "1": {
             "name": "test2",
+            "cityId": "2",
             "expectedPeople": 50,
             "amountOfRoutes": 2,
         }
@@ -51,32 +53,33 @@ def trains_data():
     }
     return trains
 
+
 def city_data():
     cities = {
-        "0" : {
-            "name" : "test",
-            "population" : 10000,
-            "hasStation" : True
+        "0": {
+            "name": "test",
+            "population": 10000,
+            "hasStation": True
         },
-        "1" : {
-            "name" : "test1",
-            "population" : 10000,
-            "hasStation" : True
+        "1": {
+            "name": "test1",
+            "population": 10000,
+            "hasStation": False
         },
-        "2" : {
-            "name" : "test2",
-            "population" : 10000,
-            "hasStation" : True
+        "2": {
+            "name": "test2",
+            "population": 10000,
+            "hasStation": True
         },
-        "3" : {
-            "name" : "test3",
-            "population" : 10000,
-            "hasStation" : True
+        "3": {
+            "name": "test3",
+            "population": 10000,
+            "hasStation": False
         },
-        "4" : {
-            "name" : "test4",
-            "population" : 10000,
-            "hasStation" : True
+        "4": {
+            "name": "test4",
+            "population": 10000,
+            "hasStation": True
         }
     }
     return cities
