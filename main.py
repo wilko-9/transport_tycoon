@@ -1,5 +1,6 @@
 import data
 import cities
+import passangers
 from station import stations_menu
 from route import routes_menu
 from trains import trains_menu
@@ -13,7 +14,6 @@ def is_input_validation(inp) -> bool:
             return False
     return True
 
-
 def main_menu_input_handler(inp, city):
     inp = inp.lower()
     if not is_input_validation(inp):
@@ -24,24 +24,23 @@ def main_menu_input_handler(inp, city):
         case "q":
             print("quiting\n")
             return "q"
+        case "":
+            pass
         case "0" | "help":
-            return "help"
+            help()
         case "1" | "city":
-            return "city"
+            cities.cities_menu(cityData)
         case "2" | "station":
             stations_menu(data.stations_data(), city)
             return "station"
         case "3" | "train":
             trains_menu(data.trains_data())
-            return "train"
         case "4" | "route":
             routes_menu(data.routes_data())
-            return "route"
         case _:
             inp = main_menu_input_handler(input
                                           ("please pick on of our optiions\n")
                                           )
-            return inp
 
 def help():
     print("This is the list of all commands")
@@ -55,9 +54,13 @@ def help():
     return main_menu_input_handler(input("pick a input"))
 
 def main():
+    global cityData
+    global stationData
+
     days = 0
     money = 5000
     cityData = data.city_data()
+    stationData = data.stations_data()
     while money > -10000:
         days += 1
         menu = main_menu_input_handler(input(f"""
@@ -69,6 +72,9 @@ new action:
 
         if range(0, 51) == 1:
             cityData = cities.new_city(cityData)
+        
+        stationData = passangers.spawn_passangers(cityData, stationData)
+        # print(stationData)
     
     print("You ran out of money!")
     print("Game Over")

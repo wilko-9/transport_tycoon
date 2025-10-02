@@ -4,7 +4,7 @@ from data import city_data
 def stations_menu(stations, city):
     print("stations")
     for station in stations.values():
-        print(f"""{station["name"]} \t | {station["expectedPeople"]} \t |  {station["amountOfRoutes"]} """)
+        print(f"""{station["name"]} \t | {station["waitingPassangers"]} \t |  {station["amountOfRoutes"]} """)
     print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")
 
     inp = input()
