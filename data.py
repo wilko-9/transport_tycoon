@@ -1,4 +1,4 @@
-def StationsData():
+def stations_data():
     stations = {
         "0": {
             "name": "test1",
@@ -14,7 +14,7 @@ def StationsData():
     return stations
 
 
-def routesData():
+def routes_data():
     routes = {
         "0": {
             "name": "test1",
@@ -30,7 +30,7 @@ def routesData():
     return routes
 
 
-def trainsData():
+def trains_data():
     trains = {
         "0": {
             "name": "test1",

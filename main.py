@@ -28,13 +28,13 @@ def main_menu_input_handler(inp) -> str:
         case "1" | "city":
             return "city"
         case "2" | "station":
-            stations_menu(data.StationsData())
+            stations_menu(data.stations_data())
             return "station"
         case "3" | "train":
-            trains_menu(data.trainsData())
+            trains_menu(data.trains_data())
             return "train"
         case "4" | "route":
-            routes_menu(data.routesData())
+            routes_menu(data.routes_data())
             return "route"
         case _:
             inp = main_menu_input_handler(input
@@ -46,7 +46,7 @@ def main_menu_input_handler(inp) -> str:
 def main():
     while True:
         menu = main_menu_input_handler(input(f"""
-money: ??? trains: {len(data.trainsData())} stations: {len(data.StationsData())} routes: {len(data.routesData())}
+money: ??? trains: {len(data.trains_data())} stations: {len(data.stations_data())} routes: {len(data.routes_data())}
 new action:
 """))
         if menu == "q":
