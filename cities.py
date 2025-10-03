@@ -1,12 +1,14 @@
 def cities_menu(cities):
+    print("-"*83)
+    print(f"|{"city name":<20} | {"population":>20} | {"does the city has a station?":>35}|")
+    print("-"*83)
     for city in cities.values():
         if city["hasStation"]:
             hasStation = "This city has a station"
         else:
             hasStation = "This city does not have a station"
-
-        print(f"{city["name"]} | population: {city["population"]} | {hasStation}")
-    
+        print(f"|{city["name"]:<20} | {str(city["population"]):>20} | {hasStation:<35}|")
+    print("-"*83)
     print("Type 'quit' to go back")
     
     match input(""):
@@ -14,6 +16,7 @@ def cities_menu(cities):
             pass
         case _:
             cities_menu(cities)
+
 
 def new_city(cities):
     cityAmmount = len(cities)

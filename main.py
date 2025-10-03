@@ -46,13 +46,16 @@ def main_menu_input_handler(inp):
 
 def help():
     print("This is the list of all commands")
-    print("0 | Help \t| Lists all commands")
-    print("1 | Cities \t| Opens the cities menu")
-    print("2 | Stations \t| Opens the stations menu")
-    print("3 | Routes \t| Opens the routes menu")
-    print("4 | Trains \t| Opens the trains menu")
-    print("Q | Quit \t| Quits the game or the current menu")
-
+    print("-" * 67)
+    print(f"|{'index':>7} | {"command":>12} | {"description":>40}|")
+    print("-" * 67)
+    print(f"|{'0':>7} | {"Help":>12} | {"Lists all commands":>40}|")
+    print(f"|{'1':>7} | {"Cities":>12} | {"Opens the cities menu":>40}|")
+    print(f"|{'2':>7} | {"Stations":>12} | {"Opens the stations menu":>40}|")
+    print(f"|{'3':>7} | {"Routes":>12} | {"Opens the routes menu":>40}|")
+    print(f"|{'4':>7} | {"rains":>12} | {"Opens the trains menu":>40}|")
+    print(f"|{'q':>7} | {"Quit":>12} | {"Quits the game or the current menu":>40}|")
+    print("-" * 67)
     return main_menu_input_handler(input("pick a input"))
 
 
@@ -69,7 +72,7 @@ def main():
     while money > -10000:
         days += 1
         menu = main_menu_input_handler(input(f"""
-money: ??? trains: {len(data.trains_data())} stations: {len(data.stations_data())} routes: {len(data.routes_data())}
+money: ??? | trains: {len(data.trains_data())} | stations: {len(data.stations_data())} | routes: {len(data.routes_data())}
 new action:
 """))
         if menu == "q":
@@ -77,12 +80,10 @@ new action:
 
         if range(0, 51) == 1:
             cityData = cities.new_city(cityData)
-        
         stationData = passangers.spawn_passangers(cityData, stationData)
         # print(stationData)
-    
     print("You ran out of money!")
     print("Game Over")
 
 
-main()
+main() 

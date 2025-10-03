@@ -1,9 +1,13 @@
 def routes_menu(routs, stations):
     print("routes:")
+    print("-" * 63)
+    print(f"|{"name":<20} | {"people traveling":>20} | {"trains on route":>15}|")
+    print("-" * 63)
     total = 0
     for route in routs.values():
-        print(f"{route['name']:<31} | {route['expectedPeople']:>10} | {len(route['trains']):>5}")
+        print(f"|{route['name']:<20} | {route['expectedPeople']:>20} | {len(route['trains']):>15}|")
         total += route["expectedPeople"]
+    print("-" * 63)
     print(f"{total} total passangers")
     print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")
 
