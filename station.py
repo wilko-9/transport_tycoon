@@ -3,11 +3,13 @@ from data import city_data
 
 def stations_menu(stations, city):
     print("stations")
+    print("-"*66)
+    print(f"|{"station name":<20} | {"waiting passengers":>20}|{"amount of routs":>20}|")
+    print("-"*66)
     for station in stations.values():
-        print(
-            f"""station name: {station["name"]} \t | waiting passangers: {station["waitingPassangers"]} \t | amount of routes:{station["amountOfRoutes"]} | age: {station["age"]}""")
+        print(f"|{station["name"]:<20} | {station["waitingPassangers"]:>20}|{station["amountOfRoutes"]:>20}|")
+    print("-"*66)
     print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")
-
     inp = input()
 
     match inp:
@@ -68,7 +70,8 @@ def delete_station(stations, city):
     listOfStations = []
     for station in stations:
         listOfStations.append(station)
-        print(f"index: {station} \t | station name: {stations[station]["name"]}")
+        print(
+            f"index: {station} \t | station name: {stations[station]["name"]}")
     inp = input("give a station index to delete\n")
     if inp == "q":
         pass
