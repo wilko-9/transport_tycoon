@@ -52,7 +52,7 @@ def trains_data():
             "previousStation" : 0
         },
         "1": {
-            "name": "test1",
+            "name": "test2",
             "maxCapacity": 1600,
             "CurrentPeople": 800,
             "currentRouteId": 1,

@@ -62,7 +62,8 @@ def add_train(trains, money, routes):
                 "currentRouteId": routeId,
                 "percentageRoute": 0,
                 "passengerCars": passengerCars,
-                "age" : 0
+                "age" : 0,
+                "previousStation" : None
             }
         })
         money -= price
@@ -144,6 +145,8 @@ def move_train(trains, money, stations, routes):
         # if train is at its destination
         if train["percentageRoute"] == 100:
             route = routes[str(train["currentRouteId"])]
+            if train["previousStation"] == None:
+                train["previousStation"] = route["stations"][-1]# set the previous station to the last station of the route.
             index = route["stations"].index(train["previousStation"]) + 1
             # if previous station was the final station of the route
             if index == len(route["stations"]):

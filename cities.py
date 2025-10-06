@@ -25,7 +25,7 @@ def new_city(cities):
     name = 'test' + str(cityAmmount)
     population = random.randint(5000, 50000)
     cities.update({
-        cityAmmount: {
+        str(cityAmmount): {
             "name": name,
             "population": population,
             "hasStation": False

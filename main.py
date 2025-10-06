@@ -2,6 +2,7 @@ import data
 import cities
 import passangers
 import economy
+import settings
 from station import stations_menu
 from route import routes_menu
 from trains import trains_menu, move_train
@@ -70,33 +71,53 @@ def main():
     global money
 
     days = 0
-    money = 50000
+    money = settings.startingMoney
     cityData = data.city_data()
     stationData = data.stations_data()
     trainData = data.trains_data()
     routeData = data.routes_data()
     while money > -10000:
-        days += 1 #to use in menu for time tracking
+        days += 1
+        # Show where each train is if there are trains
+        if len(trainData) > 0:
+            for train in trainData.values():
+                percentage = train["percentageRoute"]
+                route = routeData[str(train["currentRouteId"])]
+                num_segments = 50  # Number of track spaces
+                train_pos = int((percentage / 100) * num_segments)
+
+                progress = "X"
+                for i in range(1, num_segments + 1):
+                    if i == train_pos:
+                        progress += "T"
+                    else:
+                        progress += "-"
+                progress += "X"
+
+                print(f"Train {train["name"]}: {progress}")
         menu = main_menu_input_handler(input(f"""
-money: {money} | trains: {len(trainData)} | stations: {len(stationData)} | routes: {len(routeData)}
+money: {money} | trains: {len(trainData)} | stations: {len(stationData)} | routes: {len(routeData)} | cities: {len(cityData)} | day: {days}
 new action:
 """))
         if menu == "q":
             break
 
-        if random.randint(0,50) == 1:
+        if random.randint(0,500) == 1:
             cityData = cities.new_city(cityData)
         
-        if random.randint(0,50) == 1:
-            cityData = cities.grow_city(cityData)
+        if random.randint(0,20) == 1:
+            cityData = cities.grow_city(cityData) #ToDo: add some logic to this so cities dont actually randomly grow
 
+        oldMoney = money
         trainData, money = move_train(trainData, money, stationData, routeData)
 
         stationData = passangers.spawn_passangers(cityData, stationData)
         
         maintenance = economy.maintenance(stationData, trainData, routeData)
         money -= maintenance
+        profit = money - oldMoney
         print(f"Your maintenance cost today was {maintenance}")
+        print(f"Your profit today was {profit}")
 
     print("You ran out of money!")
     print("Game Over")

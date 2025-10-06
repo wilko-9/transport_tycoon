@@ -6,5 +6,7 @@ maintenanceCost = 50
 trainPrice = 500
 # How much it costs to buy a train car
 carPrice = 100
+# Ammount of cash the player starts with
+startingMoney = 50000
 
 # ToDo: add all const variables in this file for easy game balance changes
