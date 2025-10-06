@@ -37,7 +37,7 @@ def main_menu_input_handler(inp):
             return "station"
         case "3" | "train":
             global trainData
-            trainData = trains_menu(trainData)
+            trainData = trains_menu(trainData, money)
         case "4" | "route":
             routes_menu(routeData)
         case _:
@@ -61,15 +61,16 @@ def main():
     global stationData
     global trainData
     global routeData
+    global money
 
     days = 0
-    money = 5000
+    money = 50000
     cityData = data.city_data()
     stationData = data.stations_data()
     trainData = data.trains_data()
     routeData = data.routes_data()
     while money > -10000:
-        days += 1
+        days += 1 #to use in menu for time tracking
         menu = main_menu_input_handler(input(f"""
 money: ??? trains: {len(data.trains_data())} stations: {len(data.stations_data())} routes: {len(data.routes_data())}
 new action:
