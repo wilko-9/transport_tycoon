@@ -4,7 +4,7 @@ from data import city_data
 def stations_menu(stations, city):
     print("stations")
     print("-"*66)
-    print(f"|{"station name":<20} | {"waiting passengers":>20}|{"amount of routs":>20}|")
+    print(f"|{"station name":<20} | {"waiting passengers":>20}|{"amount of routes":>20}|")
     print("-"*66)
     for station in stations.values():
         print(f"|{station["name"]:<20} | {station["waitingPassangers"]:>20}|{station["amountOfRoutes"]:>20}|")

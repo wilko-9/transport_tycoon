@@ -4,7 +4,7 @@ import passangers
 import economy
 from station import stations_menu
 from route import routes_menu
-from trains import trains_menu
+from trains import trains_menu, move_train
 import random
 
 
@@ -35,15 +35,15 @@ def main_menu_input_handler(inp):
             cities.cities_menu(cityData)
         case "2" | "station":
             stations_menu(stationData, cityData)
-            return "station"
         case "3" | "train":
+            # ToDo: set new trainData in the function itself. not here
             global trainData
-            trainData = trains_menu(trainData, money)
+            trainData = trains_menu(trainData, routeData, money)
         case "4" | "route":
-            routes_menu(routeData)
+            routes_menu(routeData, stationData, trainData)
         case _:
             inp = main_menu_input_handler(input
-                                          ("please pick on of our optiions\n")
+                                          ("please pick on of our options\n")
                                           )
 
 
@@ -55,8 +55,8 @@ def help():
     print(f"|{'0':>7} | {"Help":>12} | {"Lists all commands":>40}|")
     print(f"|{'1':>7} | {"Cities":>12} | {"Opens the cities menu":>40}|")
     print(f"|{'2':>7} | {"Stations":>12} | {"Opens the stations menu":>40}|")
-    print(f"|{'3':>7} | {"Routes":>12} | {"Opens the routes menu":>40}|")
-    print(f"|{'4':>7} | {"rains":>12} | {"Opens the trains menu":>40}|")
+    print(f"|{'3':>7} | {"Trains":>12} | {"Opens the routes menu":>40}|")
+    print(f"|{'4':>7} | {"Routes":>12} | {"Opens the trains menu":>40}|")
     print(f"|{'q':>7} | {"Quit":>12} | {"Quits the game or the current menu":>40}|")
     print("-" * 67)
     return main_menu_input_handler(input("pick a input"))
@@ -78,7 +78,7 @@ def main():
     while money > -10000:
         days += 1 #to use in menu for time tracking
         menu = main_menu_input_handler(input(f"""
-money: ??? | trains: {len(data.trains_data())} | stations: {len(data.stations_data())} | routes: {len(data.routes_data())}
+money: {money} | trains: {len(trainData)} | stations: {len(stationData)} | routes: {len(routeData)}
 new action:
 """))
         if menu == "q":
@@ -86,6 +86,12 @@ new action:
 
         if random.randint(0,50) == 1:
             cityData = cities.new_city(cityData)
+        
+        if random.randint(0,50) == 1:
+            cityData = cities.grow_city(cityData)
+
+        trainData, money = move_train(trainData, money, stationData, routeData)
+
         stationData = passangers.spawn_passangers(cityData, stationData)
         
         maintenance = economy.maintenance(stationData, trainData, routeData)
@@ -94,6 +100,7 @@ new action:
 
     print("You ran out of money!")
     print("Game Over")
+
 
 
 main() 

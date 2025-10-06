@@ -1,12 +1,15 @@
-def routes_menu(routs, stations):
+def routes_menu(routes, stations, trains):
     print("routes:")
     print("-" * 63)
     print(f"|{"name":<20} | {"people traveling":>20} | {"trains on route":>15}|")
     print("-" * 63)
     total = 0
-    for route in routs.values():
-        print(f"|{route['name']:<20} | {route['expectedPeople']:>20} | {len(route['trains']):>15}|")
-        total += route["expectedPeople"]
+    for route in routes.values():
+        passengersOnRoute = 0
+        for train in route['trains']:
+            passengersOnRoute += trains[str(train)]["CurrentPeople"]
+        print(f"|{route['name']:<20} | {passengersOnRoute:>20} | {len(route['trains']):>15}|")
+        total += passengersOnRoute
     print("-" * 63)
     print(f"{total} total passangers")
     print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")
@@ -17,16 +20,16 @@ def routes_menu(routs, stations):
         case "q":
             pass
         case "1" | "add":
-            add_rout(routs, stations)
+            add_rout(routes, stations)
         case "2" | "edit":
             edit_route()
         case "3" | "delete":
             delete_route()
         case _:
-            routes_menu(routs, stations)
+            routes_menu(routes, stations, trains)
 
 
-def add_rout(routs, stations):
+def add_rout(routes, stations):
     complete_station_list = []
     add_station_list = []
     want_to_add_station = True
@@ -46,10 +49,10 @@ def add_rout(routs, stations):
         else:
             add_station_list.append(complete_station_list[int(inp)])
             print("station has been added")
-    routsAmmount = int(list(routs)[-1]) + 1
-    name = "route " + str(routsAmmount)
-    routs.update({
-        routsAmmount: {
+    routesAmmount = int(list(routes)[-1]) + 1
+    name = "route " + str(routesAmmount)
+    routes.update({
+        routesAmmount: {
             "name": name,
             "expectedPeople": 100,
             "stations": add_station_list,
@@ -57,7 +60,7 @@ def add_rout(routs, stations):
         }
     })
     print("rout has been added")
-    return routs
+    return routes
 
 
 def edit_route():

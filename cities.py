@@ -19,11 +19,11 @@ def cities_menu(cities):
         case _:
             cities_menu(cities)
 
-
+# create a new city with a random name and a random population ranging from 5000 to 50000
 def new_city(cities):
     cityAmmount = len(cities)
     name = 'test' + str(cityAmmount)
-    population = random.randint(5000,50000)
+    population = random.randint(5000, 50000)
     cities.update({
         cityAmmount: {
             "name": name,
@@ -32,4 +32,11 @@ def new_city(cities):
         }
     })
     print(f"A new city with the name {name} has been founded! It has a population of {population} people")
+    return cities
+
+#grow a random city by a random number, ranging from 1000 to 10000
+def grow_city(cities):
+    city = cities[str(random.randint(0,len(cities)-1))] # Decide what city should grow
+    city["population"] += random.randint(1000, 10000)
+    print(f"The city {city["name"]} has grown! It now has a population of {city["population"]} people")
     return cities

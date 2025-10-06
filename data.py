@@ -39,6 +39,7 @@ def routes_data():
 
 
 def trains_data():
+    # ToDo: percantageRoute should be metersOnRoute for actual distance calculations
     trains = {
         "0": {
             "name": "test1",
@@ -47,7 +48,8 @@ def trains_data():
             "currentRouteId": 0,
             "percentageRoute": 40,
             "passengerCars": 20,
-            "age" : 0
+            "age" : 0,
+            "previousStation" : 0
         },
         "1": {
             "name": "test1",
@@ -56,7 +58,8 @@ def trains_data():
             "currentRouteId": 1,
             "percentageRoute": 80,
             "passengerCars": 40,
-            "age" : 0
+            "age" : 0,
+            "previousStation" : 1
         }
     }
     return trains
@@ -68,7 +71,7 @@ def city_data():
             "name": "test",
             "population": 10000,
             "hasStation": True,
-            "station": "0"
+            "station": "0"# ToDo: just make this station : NULL if it doesnt have a station. removes the need for hasStation
         },
         "1": {
             "name": "test1",

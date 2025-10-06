@@ -24,7 +24,6 @@ def maintenance(stations, trains, routes) -> int:
             trainCost += maintenanceCost
 
     for route in routes.values():
-        print(route["age"])
         route["age"] += 1
         if route["age"] % maintenanceTime == 0:
             routeCost += maintenanceCost
