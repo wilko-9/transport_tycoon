@@ -31,7 +31,7 @@ def add_station(stations, city):
     for cityI in city_data():
         if not city_data()[cityI]["hasStation"]:
             cityNoStation.append(cityI)
-            print(f"index {index} {str(city_data()[cityI]["name"])}")
+            print(f"ID: {index} City name: {str(city_data()[cityI]["name"])}")
             index += 1
     inp = input("please select a index\n")
     if inp == "q":
@@ -47,14 +47,16 @@ def add_station(stations, city):
             StationsAmmount: {
                 "name": name,
                 "cityId": cityId,
-                "expectedPeople": 100,
-                "amountOfRoutes": 1,
+                "waitingPassangers": 0,
+                "amountOfRoutes": 0,
+                "age" : 0
             }})
         city.update({
             cityId: {
                 "name": city[cityNoStation[int(inp)]]["name"],
                 "population":  city[cityNoStation[int(inp)]]["population"],
                 "hasStation": True,
+                "station": StationsAmmount
             }})
         return stations, city
     else:

@@ -106,7 +106,7 @@ new action:
             cityData = cities.new_city(cityData)
         
         if random.randint(0,20) == 1:
-            cityData = cities.grow_city(cityData) #ToDo: add some logic to this so cities dont actually randomly grow
+            cityData = cities.grow_city(cityData) #ToDo: add some logic to this so cities dont actually randomly grow. Let them grow on a condition.
 
         oldMoney = money
         trainData, money = move_train(trainData, money, stationData, routeData)

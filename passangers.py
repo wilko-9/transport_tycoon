@@ -3,7 +3,8 @@ def spawn_passangers(cities, stations):
         if city["hasStation"]:
             # ToDo: fix random value jump
             currentStation = stations[city["station"]]
-            waitingPassangers = currentStation["waitingPassangers"] + (city["population"] / 10) / (1 + currentStation["waitingPassangers"])
-            currentStation.update({"waitingPassangers" : int(waitingPassangers)})
+            if stations[city["station"]]["amountOfRoutes"] > 0:
+                waitingPassangers = currentStation["waitingPassangers"] + (city["population"] / 10) / (1 + currentStation["waitingPassangers"])
+                currentStation.update({"waitingPassangers" : int(waitingPassangers)})
 
     return stations
