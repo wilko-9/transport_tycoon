@@ -76,7 +76,8 @@ def city_data():
         "1": {
             "name": "test1",
             "population": 10000,
-            "hasStation": False
+            "hasStation": False,
+            "station": None
         },
         "2": {
             "name": "test2",
@@ -87,12 +88,14 @@ def city_data():
         "3": {
             "name": "test3",
             "population": 10000,
-            "hasStation": False
+            "hasStation": False,
+            "station": None
         },
         "4": {
             "name": "test4",
             "population": 10000,
-            "hasStation": False
+            "hasStation": False,
+            "station": None
         }
     }
     return cities

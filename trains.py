@@ -26,7 +26,7 @@ def trains_menu(trains, routes, money):
         case "2" | "edit":
             return edit_train(trains, money, routes)
         case "3" | "delete":
-            return delete_train(trains, money)
+            return delete_train(trains, money, routes)
         case _:
             return trains_menu(trains, routes, money)
 
@@ -126,13 +126,15 @@ def edit_train(trains, money, routes):
     return trains
 
 
-def delete_train(trains, money):
+def delete_train(trains, money, routes):
     trainID = input("what train would you like to delete?")
     if trainID in trains:
         train = trains[trainID]
         if input(f"are you sure that you want to delete train {trainID}? and all {train["passengerCars"]} of its cars? (yes/no): ").lower() == "yes":
             money = money + int(settings.carPrice * 0.8) * int(train["passengerCars"]) + int(settings.trainPrice * 0.8)
-            del train
+            print(routes[str(train["currentRouteId"])]["trains"], trainID)
+            routes[str(train["currentRouteId"])]["trains"].remove(int(trainID))
+            trains.pop(trainID)
             print("Train deleted succesfully")
             return trains
     else:
