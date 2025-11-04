@@ -82,7 +82,7 @@ def main():
         if len(trainData) > 0:
             for train in trainData.values():
                 percentage = train["percentageRoute"]
-                route = routeData[str(train["currentRouteId"])]
+                # route = routeData[str(train["currentRouteId"])]
                 num_segments = 50  # Number of track spaces
                 train_pos = int((percentage / 100) * num_segments)
 
@@ -96,7 +96,8 @@ def main():
 
                 print(f"Train {train["name"]}: {progress}")
         menu = main_menu_input_handler(input(f"""
-money: {money} | trains: {len(trainData)} | stations: {len(stationData)} | routes: {len(routeData)} | cities: {len(cityData)} | day: {days}
+money: {money} | trains: {len(trainData)} | stations: {len(stationData)} | routes: {len(routeData)} |
+ cities: {len(cityData)} | day: {days}
 new action:
 """))
         if menu == "q":

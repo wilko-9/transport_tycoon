@@ -71,7 +71,7 @@ def city_data():
             "name": "test",
             "population": 10000,
             "hasStation": True,
-            "station": "0"  # ToDo: just make this station : NULL if it doesnt have a station. removes the need for hasStation
+            "station": "0"  # ToDo: just make this station : None. removes the need for hasStation
         },
         "1": {
             "name": "test1",

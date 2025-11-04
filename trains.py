@@ -4,17 +4,19 @@ import settings
 def trains_menu(trains, routes, money):
     print("trains:")
     print("-"*135)
-    print(f"|{"train ID":<20} |{"train name":<20} | {"train capacaty":>20}| {"current route id":>20} | {"route percentage":>20}|  {"passenger cars":>20}|")
+    print(f"""|{"train ID":<20} |{"train name":<20} | {"train capacaty":>20}| {"current route id":>20} |
+           {"route percentage":>20}|  {"passenger cars":>20}|""")
     print("-"*135)
     for train_id, train in trains.items():
-        if train["currentRouteId"] == None:
+        if train["currentRouteId"] is None:
             route = "This train is not assigned to a route"
         else:
             route = routes[str(train["currentRouteId"])]["name"]
         trainCapacityString = str(
             train["CurrentPeople"]) + "/" + str(train["maxCapacity"])
         print(
-            f"|{train_id:<20} |{train["name"]:<20} | {trainCapacityString:>20}| {route:>20} | {str(train["percentageRoute"]) + "%":>20}|  {train["passengerCars"]:>20}|")
+            f"""|{train_id:<20} |{train["name"]:<20} | {trainCapacityString:>20}| {route:>20} |
+              {str(train["percentageRoute"]) + "%":>20}|  {train["passengerCars"]:>20}|""")
     print("-"*135)
     print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")
 
@@ -116,7 +118,7 @@ def edit_train(trains, money, routes):
                     print(f"Route updated to {routeId}.")
                 elif routeId == "none":
                     train["currentRouteId"] = None
-                    print(f"Route updated to None.")
+                    print("Route updated to None.")
                 else:
                     print("No route with found with given ID. Please try again.")
                     edit_train(trains, money, routes)
@@ -137,7 +139,8 @@ def delete_train(trains, money, routes):
     trainID = input("what train would you like to delete?")
     if trainID in trains:
         train = trains[trainID]
-        if input(f"are you sure that you want to delete train {trainID}? and all {train["passengerCars"]} of its cars? (yes/no): ").lower() == "yes":
+        if input(f"""are you sure that you want to delete train {trainID}? and all {train["passengerCars"]} of its cars?
+                 (yes/no): """).lower() == "yes":
             money = money + int(settings.carPrice * 0.8) * \
                 int(train["passengerCars"]) + int(settings.trainPrice * 0.8)
             print(routes[str(train["currentRouteId"])]["trains"], trainID)
@@ -156,7 +159,7 @@ def move_train(trains, money, stations, routes):
         # if train is at its destination
         if train["percentageRoute"] == 100:
             route = routes[str(train["currentRouteId"])]
-            if train["previousStation"] == None:
+            if train["previousStation"] is None:
                 # set the previous station to the last station of the route.
                 train["previousStation"] = route["stations"][-1]
             index = route["stations"].index(train["previousStation"]) + 1
