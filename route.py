@@ -1,17 +1,17 @@
 def routes_menu(routes, stations, trains):
     print("routes:")
-    print("-" * 63)
-    print(f"|{"name":<20} | {"people traveling":>20} | {"trains on route":>15}|")
-    print("-" * 63)
+    print("-" * 74)
+    print(f"|{"id":<10}|{"name":<20} | {"people traveling":>20} | {"trains on route":>15}|")
+    print("-" * 74)
     total = 0
-    for route in routes.values():
+    for route in routes:
         passengersOnRoute = 0
-        for train in route['trains']:
+        for train in routes[route]['trains']:
             passengersOnRoute += trains[str(train)]["CurrentPeople"]
         print(
-            f"|{route['name']:<20} | {passengersOnRoute:>20} | {len(route['trains']):>15}|")
+            f"|{route:<10}|{routes[route]['name']:<20} | {passengersOnRoute:>20} | {len(routes[route]['trains']):>15}|")
         total += passengersOnRoute
-    print("-" * 63)
+    print("-" * 74)
     print(f"{total} total passangers")
     print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")
 
@@ -64,8 +64,12 @@ def add_rout(routes, stations):
     return routes
 
 
-def edit_route():
-    print("route has been edited")
+def edit_route(routes):
+    routeId = input(
+        "Please enter the ID of the route that you would like to edit: ")
+    
+    if routeId in routes:
+        print("testing")
 
 
 def delete_route():
