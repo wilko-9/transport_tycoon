@@ -1,0 +1,61 @@
+{
+    "0": {
+        "name": "testSave",
+        "days": 0,
+        "money": 50000,
+        "gameSettings":{
+            "maintenanceTime": 20,
+            "maintenanceCost": 50,
+            "trainPrice": 500,
+            "carPrice": 100,
+            "startingMoney": 50000
+        },
+        "cities": {
+            "0": {
+                "name": "test",
+                "population": 10000,
+                "station": "0"
+            },
+            "1": {
+                "name": "test1",
+                "population": 10000,
+                "station": "None"
+            }
+        },
+        "stations": {
+            "0": {
+                "name": "test1",
+                "waitingPassangers": 50,
+                "cityId": "0",
+                "amountOfRoutes": 1,
+                "age": 0
+            }
+        },
+        "routes": {
+            "0": {
+                "name": "test1",
+                "expectedPeople": 100,
+                "stations": [
+                    0,
+                    1
+                ],
+                "trains": [
+                    0
+                ],
+                "age": 0
+            }
+        },
+        "trains_data": {
+            "0": {
+                "name": "test1",
+                "maxCapacity": 800,
+                "CurrentPeople": 400,
+                "currentRouteId": 0,
+                "percentageRoute": 40,
+                "passengerCars": 20,
+                "age": 0,
+                "previousStation": 0
+            }
+        }
+    }
+}
