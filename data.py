@@ -5,7 +5,7 @@ def stations_data():
             "waitingPassangers": 50,
             "cityId": "0",
             "amountOfRoutes": 1,
-            "age" : 0
+            "age": 0
         },
         "1": {
             "name": "test2",
