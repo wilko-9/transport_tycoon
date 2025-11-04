@@ -23,7 +23,7 @@ def routes_menu(routes, stations, trains):
         case "1" | "add":
             add_rout(routes, stations)
         case "2" | "edit":
-            edit_route()
+            edit_route(routes)
         case "3" | "delete":
             delete_route()
         case _:
@@ -69,8 +69,13 @@ def edit_route(routes):
         "Please enter the ID of the route that you would like to edit: ")
     
     if routeId in routes:
-        print("testing")
-
+        print(routeId)
+        if input("would you like to give the the route a new name? (yes/no): ").lower() == "yes":
+            newName = input("give the route a new name")
+            routes[routeId]["name"] = newName
+    else:
+        print("The given ID was not found. Please try again.")
+        edit_route(routes)
 
 def delete_route():
     print("route has been deleted")
