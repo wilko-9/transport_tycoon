@@ -1,3 +1,7 @@
+import json
+import os
+
+
 def stations_data():
     stations = {
         "0": {
@@ -99,3 +103,25 @@ def city_data():
         }
     }
     return cities
+
+
+'''
+loads in the current game save data
+'''
+
+
+def load_game_data(saveIndex: int):
+    file_directory = os.path.dirname(os.path.realpath(__file__))
+    save = file_directory + "\\saves.json"
+    with open(save) as f:
+        theData = json.load(f)
+    current_save = theData[str(saveIndex)]
+    return current_save
+
+
+'''
+condenses all data to be send to the save file
+'''
+
+def data_parser():
+    print("test")
