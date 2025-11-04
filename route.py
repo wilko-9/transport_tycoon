@@ -8,7 +8,8 @@ def routes_menu(routes, stations, trains):
         passengersOnRoute = 0
         for train in route['trains']:
             passengersOnRoute += trains[str(train)]["CurrentPeople"]
-        print(f"|{route['name']:<20} | {passengersOnRoute:>20} | {len(route['trains']):>15}|")
+        print(
+            f"|{route['name']:<20} | {passengersOnRoute:>20} | {len(route['trains']):>15}|")
         total += passengersOnRoute
     print("-" * 63)
     print(f"{total} total passangers")

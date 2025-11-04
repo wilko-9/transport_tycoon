@@ -102,17 +102,18 @@ new action:
         if menu == "q":
             break
 
-        if random.randint(0,500) == 1:
+        if random.randint(0, 500) == 1:
             cityData = cities.new_city(cityData)
-        
-        if random.randint(0,20) == 1:
-            cityData = cities.grow_city(cityData) #ToDo: add some logic to this so cities dont actually randomly grow. Let them grow on a condition.
+
+        if random.randint(0, 20) == 1:
+            # ToDo: add some logic to this so cities dont actually randomly grow. Let them grow on a condition.
+            cityData = cities.grow_city(cityData)
 
         oldMoney = money
         trainData, money = move_train(trainData, money, stationData, routeData)
 
         stationData = passangers.spawn_passangers(cityData, stationData)
-        
+
         maintenance = economy.maintenance(stationData, trainData, routeData)
         money -= maintenance
         profit = money - oldMoney
@@ -123,5 +124,4 @@ new action:
     print("Game Over")
 
 
-
-main() 
+main()

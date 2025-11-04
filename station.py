@@ -4,10 +4,12 @@ from data import city_data
 def stations_menu(stations, city):
     print("stations")
     print("-"*66)
-    print(f"|{"station name":<20} | {"waiting passengers":>20}|{"amount of routes":>20}|")
+    print(
+        f"|{"station name":<20} | {"waiting passengers":>20}|{"amount of routes":>20}|")
     print("-"*66)
     for station in stations.values():
-        print(f"|{station["name"]:<20} | {station["waitingPassangers"]:>20}|{station["amountOfRoutes"]:>20}|")
+        print(
+            f"|{station["name"]:<20} | {station["waitingPassangers"]:>20}|{station["amountOfRoutes"]:>20}|")
     print("-"*66)
     print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")
     inp = input()
@@ -49,7 +51,7 @@ def add_station(stations, city):
                 "cityId": cityId,
                 "waitingPassangers": 0,
                 "amountOfRoutes": 0,
-                "age" : 0
+                "age": 0
             }})
         city.update({
             cityId: {

@@ -12,7 +12,7 @@ def stations_data():
             "waitingPassangers": 50,
             "cityId": "2",
             "amountOfRoutes": 2,
-            "age" : 0
+            "age": 0
         }
     }
     return stations
@@ -25,14 +25,14 @@ def routes_data():
             "expectedPeople": 100,
             "stations": [0, 1],
             "trains": [0],
-            "age" : 0
+            "age": 0
         },
         "1": {
             "name": "test2",
             "expectedPeople": 50,
             "stations": [1, 0],
             "trains": [1],
-            "age" : 0
+            "age": 0
         }
     }
     return routes
@@ -48,8 +48,8 @@ def trains_data():
             "currentRouteId": 0,
             "percentageRoute": 40,
             "passengerCars": 20,
-            "age" : 0,
-            "previousStation" : 0
+            "age": 0,
+            "previousStation": 0
         },
         "1": {
             "name": "test2",
@@ -58,8 +58,8 @@ def trains_data():
             "currentRouteId": 1,
             "percentageRoute": 80,
             "passengerCars": 40,
-            "age" : 0,
-            "previousStation" : 1
+            "age": 0,
+            "previousStation": 1
         }
     }
     return trains
@@ -71,7 +71,7 @@ def city_data():
             "name": "test",
             "population": 10000,
             "hasStation": True,
-            "station": "0"# ToDo: just make this station : NULL if it doesnt have a station. removes the need for hasStation
+            "station": "0"  # ToDo: just make this station : NULL if it doesnt have a station. removes the need for hasStation
         },
         "1": {
             "name": "test1",
