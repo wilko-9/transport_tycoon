@@ -31,7 +31,7 @@ def main_menu_input_handler(inp):
         case "":
             pass
         case "0" | "help":
-            help()
+            print_help()
         case "1" | "city":
             cities.cities_menu(cityData)
         case "2" | "station":
@@ -48,7 +48,7 @@ def main_menu_input_handler(inp):
                                           )
 
 
-def help():
+def print_help():
     print("This is the list of all commands")
     print("-" * 67)
     print(f"|{'index':>7} | {"command":>12} | {"description":>40}|")
@@ -58,24 +58,51 @@ def help():
     print(f"|{'2':>7} | {"Stations":>12} | {"Opens the stations menu":>40}|")
     print(f"|{'3':>7} | {"Trains":>12} | {"Opens the routes menu":>40}|")
     print(f"|{'4':>7} | {"Routes":>12} | {"Opens the trains menu":>40}|")
+    print(f"|{'s':>7} | {"Save":>12} | {"Saves the current state of the game":>40}|")
     print(f"|{'q':>7} | {"Quit":>12} | {"Quits the game or the current menu":>40}|")
     print("-" * 67)
     return main_menu_input_handler(input("pick a input"))
 
 
-def main():
-    global cityData
-    global stationData
-    global trainData
-    global routeData
-    global money
+def print_main_menu():
+    print("main menu")
+    print("-" * 24)
+    print(f"|{'0':>7} | {"load game":>12}|")
+    print(f"|{'1':>7} | {"new game":>12}|")
+    print(f"|{'2':>7} | {"options":>12}|")
+    print(f"|{'q':>7} | {"quite":>12}|")
+    print("-" * 24)
 
-    days = 0
-    money = settings.startingMoney
-    cityData = data.city_data()
-    stationData = data.stations_data()
-    trainData = data.trains_data()
-    routeData = data.routes_data()
+
+def menu_handler(loaded_data):
+    while True:
+        print_main_menu()
+        user_input = input("input? \n")
+        match user_input:
+            case "0":
+                return print_save_menu(loaded_data)
+                break
+            case "q":
+                exit()
+            case _:
+                pass
+
+
+def print_save_menu(all_saves):
+    while True:
+        for save in all_saves:
+            print(save, all_saves[save]["name"])
+        user_input = input("select save: ")
+        if user_input in all_saves:
+            print("game start")
+            return all_saves[user_input]
+        elif user_input == "q" or user_input == "Q":
+            break
+        else:
+            print("please select a save file by index")
+
+
+def main_game_loop(days, money, cityData, stationData, trainData, routeData):
     while money > -10000:
         days += 1
         # Show where each train is if there are trains
@@ -96,9 +123,9 @@ def main():
 
                 print(f"Train {train["name"]}: {progress}")
         menu = main_menu_input_handler(input(f"""
-money: {money} | trains: {len(trainData)} | stations: {len(stationData)} | routes: {len(routeData)} | cities: {len(cityData)} | day: {days}
-new action:
-"""))
+    money: {money} | trains: {len(trainData)} | stations: {len(stationData)} | routes: {len(routeData)} | cities: {len(cityData)} | day: {days}
+    new action:
+    """))
         if menu == "q":
             break
 
@@ -120,8 +147,32 @@ new action:
         print(f"Your maintenance cost today was {maintenance}")
         print(f"Your profit today was {profit}")
 
-    print("You ran out of money!")
-    print("Game Over")
+
+def main():
+    global cityData
+    global stationData
+    global trainData
+    global routeData
+    global money
+    loaded_data = data.load_game_data()
+    loaded_save_data = {}
+    while True:
+        loaded_save_data = menu_handler(loaded_data)
+        if not loaded_save_data:
+            pass
+        else:
+            days = loaded_save_data["days"]
+            money = loaded_save_data["gameSettings"]["startingMoney"]
+            cityData = loaded_save_data["cities"]
+            stationData = loaded_save_data["stations"]
+            trainData = loaded_save_data["trains"]
+            routeData = loaded_save_data["routes"]
+
+            main_game_loop(days, money, cityData,
+                           stationData, trainData, routeData)
+
+            print("You ran out of money!")
+            print("Game Over")
 
 
 main()

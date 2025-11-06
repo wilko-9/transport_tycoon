@@ -107,21 +107,40 @@ def city_data():
 
 '''
 loads in the current game save data
+TODO:  
+    - check for if there is no file
+    - check for in correct data
 '''
 
 
-def load_game_data(saveIndex: int):
+def load_game_data():
     file_directory = os.path.dirname(os.path.realpath(__file__))
     save = file_directory + "\\saves.json"
     with open(save) as f:
         theData = json.load(f)
-    current_save = theData[str(saveIndex)]
+    current_save = theData
     return current_save
 
 
 '''
 condenses all data to be send to the save file
+TODO:  
+    - still needs validation of data
 '''
 
-def data_parser():
-    print("test")
+
+def save_parser(cities, stations, routes, trains, days, money, game_settings, current_save):
+    save_index = "0"
+    save = {
+        save_index: {
+            "name": current_save["name"],
+            "days": days,
+            "money": money,
+            "gameSettings": game_settings,
+            "cities": cities,
+            "stations": stations,
+            "routes": routes,
+            "trains": trains
+        }
+    }
+    return json.dumps(save)
