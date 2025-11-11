@@ -1,5 +1,6 @@
 import json
 import os
+from sys import platform
 
 
 def stations_data():
@@ -115,7 +116,10 @@ TODO:
 
 def load_game_data():
     file_directory = os.path.dirname(os.path.realpath(__file__))
-    save = file_directory + "\\saves.json"
+    if platform == "win32" or platform == "cygwin":
+        save = file_directory + "\\saves.json"
+    else:
+        save = file_directory + "/saves.json"
     with open(save) as f:
         theData = json.load(f)
     current_save = theData
