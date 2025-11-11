@@ -25,7 +25,7 @@ def main_menu_input_handler(inp):
             input("please dont use any spaces or special charcters\n")
         )
     match inp:
-        case "q":
+        case "q" | "Q":
             print("quiting\n")
             return "q"
         case "":
@@ -46,6 +46,20 @@ def main_menu_input_handler(inp):
             inp = main_menu_input_handler(input
                                           ("please pick on of our options\n")
                                           )
+
+
+def menu_handler(loaded_data):
+    while True:
+        print_main_menu()
+        user_input = input("input? \n")
+        match user_input:
+            case "0":
+                return print_save_menu(loaded_data)
+                break
+            case "q" | "Q":
+                exit()
+            case _:
+                pass
 
 
 def print_help():
@@ -69,23 +83,8 @@ def print_main_menu():
     print("-" * 24)
     print(f"|{'0':>7} | {"load game":>12}|")
     print(f"|{'1':>7} | {"new game":>12}|")
-    print(f"|{'2':>7} | {"options":>12}|")
     print(f"|{'q':>7} | {"quite":>12}|")
     print("-" * 24)
-
-
-def menu_handler(loaded_data):
-    while True:
-        print_main_menu()
-        user_input = input("input? \n")
-        match user_input:
-            case "0":
-                return print_save_menu(loaded_data)
-                break
-            case "q":
-                exit()
-            case _:
-                pass
 
 
 def print_save_menu(all_saves):
