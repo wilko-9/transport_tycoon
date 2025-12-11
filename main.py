@@ -17,7 +17,7 @@ def is_input_validation(inp) -> bool:
     return True
 
 
-def main_menu_input_handler(inp):
+def main_menu_input_handler(inp, moneySave):
     inp = inp.lower()
     if not is_input_validation(inp):
         main_menu_input_handler(
@@ -42,13 +42,14 @@ def main_menu_input_handler(inp):
         case "4" | "route":
             routes_menu(routeData, stationData, trainData)
         case "S" | "s" | "save" | "SAVE":
+            print(moneySave)
             data.write_save_data(
                 cityData,
                 stationData,
                 routeData,
                 trainData,
                 days,
-                money,
+                moneySave,
                 gameSettings,
                 saveName,
             )
@@ -136,6 +137,7 @@ def main_game_loop(days, money, cityData, stationData, trainData, routeData, sav
     new action:
     """
             ),
+            money,
         )
         if menu == "q":
             break
