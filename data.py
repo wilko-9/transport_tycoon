@@ -51,7 +51,7 @@ def trains_data():
             "maxCapacity": 800,
             "CurrentPeople": 400,
             "currentRouteId": 0,
-            "percentageRoute": 40,
+            "metersOnRoute": 40,
             "passengerCars": 20,
             "age": 0,
             "previousStation": 0
@@ -61,7 +61,7 @@ def trains_data():
             "maxCapacity": 1600,
             "CurrentPeople": 800,
             "currentRouteId": 1,
-            "percentageRoute": 80,
+            "metersOnRoute": 80,
             "passengerCars": 40,
             "age": 0,
             "previousStation": 1

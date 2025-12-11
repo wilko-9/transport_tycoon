@@ -106,7 +106,7 @@ def main_game_loop(days, money, cityData, stationData, trainData, routeData):
         # Show where each train is if there are trains
         if len(trainData) > 0:
             for train in trainData.values():
-                percentage = train["percentageRoute"]
+                percentage = train["metersOnRoute"]
                 route = routeData[str(train["currentRouteId"])]
                 num_segments = 50  # Number of track spaces
                 train_pos = int((percentage / 100) * num_segments)

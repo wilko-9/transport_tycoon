@@ -14,7 +14,7 @@ def trains_menu(trains, routes, money):
         trainCapacityString = str(
             train["CurrentPeople"]) + "/" + str(train["maxCapacity"])
         print(
-            f"|{train_id:<20} |{train["name"]:<20} | {trainCapacityString:>20}| {route:>20} | {str(train["percentageRoute"]) + "%":>20}|  {train["passengerCars"]:>20}|")
+            f"|{train_id:<20} |{train["name"]:<20} | {trainCapacityString:>20}| {route:>20} | {str(train["metersOnRoute"]) + "%":>20}|  {train["passengerCars"]:>20}|")
     print("-"*135)
     print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")
 
@@ -63,7 +63,7 @@ def add_train(trains, money, routes):
                 "maxCapacity": int(passengerCars)*40,
                 "CurrentPeople": 0,
                 "currentRouteId": routeId,
-                "percentageRoute": 0,
+                "metersOnRoute": 0,
                 "passengerCars": passengerCars,
                 "age": 0,
                 "previousStation": None
@@ -152,9 +152,9 @@ def delete_train(trains, money, routes):
 
 def move_train(trains, money, stations, routes):
     for train in trains.values():
-        train["percentageRoute"] += 5
+        train["metersOnRoute"] += 5
         # if train is at its destination
-        if train["percentageRoute"] == 100:
+        if train["metersOnRoute"] == 100:
             route = routes[str(train["currentRouteId"])]
             if train["previousStation"] == None:
                 # set the previous station to the last station of the route.
@@ -166,7 +166,7 @@ def move_train(trains, money, stations, routes):
             station = stations[str(index)]
             train["previousStation"] = index
             # unload passangers and add money for delivered passangers
-            train["percentageRoute"] = 0
+            train["metersOnRoute"] = 0
             # ToDo: replace 5 with value of the route.
             money += train["CurrentPeople"] * 5
             train["CurrentPeople"] = 0
