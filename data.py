@@ -10,15 +10,15 @@ def stations_data():
             "waitingPassangers": 50,
             "cityId": "0",
             "amountOfRoutes": 1,
-            "age": 0
+            "age": 0,
         },
         "1": {
             "name": "test2",
             "waitingPassangers": 50,
             "cityId": "2",
             "amountOfRoutes": 2,
-            "age": 0
-        }
+            "age": 0,
+        },
     }
     return stations
 
@@ -30,21 +30,20 @@ def routes_data():
             "expectedPeople": 100,
             "stations": [0, 1],
             "trains": [0],
-            "age": 0
+            "age": 0,
         },
         "1": {
             "name": "test2",
             "expectedPeople": 50,
             "stations": [1, 0],
             "trains": [1],
-            "age": 0
-        }
+            "age": 0,
+        },
     }
     return routes
 
 
 def trains_data():
-    # ToDo: percantageRoute should be metersOnRoute for actual distance calculations
     trains = {
         "0": {
             "name": "test1",
@@ -54,7 +53,7 @@ def trains_data():
             "metersOnRoute": 40,
             "passengerCars": 20,
             "age": 0,
-            "previousStation": 0
+            "previousStation": 0,
         },
         "1": {
             "name": "test2",
@@ -64,8 +63,8 @@ def trains_data():
             "metersOnRoute": 80,
             "passengerCars": 40,
             "age": 0,
-            "previousStation": 1
-        }
+            "previousStation": 1,
+        },
     }
     return trains
 
@@ -76,42 +75,37 @@ def city_data():
             "name": "test",
             "population": 10000,
             "hasStation": True,
-            "station": "0"  # ToDo: just make this station : NULL if it doesnt have a station. removes the need for hasStation
+            "station": "0",  # ToDo: just make this station : NULL if it doesnt have a station. removes the need for hasStation
         },
         "1": {
             "name": "test1",
             "population": 10000,
             "hasStation": False,
-            "station": None
+            "station": None,
         },
-        "2": {
-            "name": "test2",
-            "population": 10000,
-            "hasStation": True,
-            "station": "1"
-        },
+        "2": {"name": "test2", "population": 10000, "hasStation": True, "station": "1"},
         "3": {
             "name": "test3",
             "population": 10000,
             "hasStation": False,
-            "station": None
+            "station": None,
         },
         "4": {
             "name": "test4",
             "population": 10000,
             "hasStation": False,
-            "station": None
-        }
+            "station": None,
+        },
     }
     return cities
 
 
-'''
+"""
 loads in the current game save data
 TODO:  
     - check for if there is no file
     - check for in correct data
-'''
+"""
 
 
 def load_game_data():
@@ -126,25 +120,40 @@ def load_game_data():
     return current_save
 
 
-'''
+"""
 condenses all data to be send to the save file
 TODO:  
     - still needs validation of data
-'''
+"""
 
 
-def save_parser(cities, stations, routes, trains, days, money, game_settings, current_save):
+def save_parser(cities, stations, routes, trains, days, money, gameSettings, saveName):
     save_index = "0"
     save = {
         save_index: {
-            "name": current_save["name"],
+            "name": saveName,
             "days": days,
             "money": money,
-            "gameSettings": game_settings,
+            "gameSettings": gameSettings,
             "cities": cities,
             "stations": stations,
             "routes": routes,
-            "trains": trains
+            "trains": trains,
         }
     }
-    return json.dumps(save)
+    return json.dumps(save, indent=4)
+
+
+def write_save_data(
+    cities, stations, routes, trains, days, money, gameSettings, saveName
+):
+    saveWrite = save_parser(
+        cities, stations, routes, trains, days, money, gameSettings, saveName
+    )
+    file_directory = os.path.dirname(os.path.realpath(__file__))
+    if platform == "win32" or platform == "cygwin":
+        save = file_directory + "\\saves.json"
+    else:
+        save = file_directory + "/saves.json"
+    with open(save, "w") as f:
+        f.write(saveWrite)

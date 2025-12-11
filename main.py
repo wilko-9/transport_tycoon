@@ -41,10 +41,19 @@ def main_menu_input_handler(inp):
             trainData = trains_menu(trainData, routeData, money)
         case "4" | "route":
             routes_menu(routeData, stationData, trainData)
+        case "S" | "s" | "save" | "SAVE":
+            data.write_save_data(
+                cityData,
+                stationData,
+                routeData,
+                trainData,
+                days,
+                money,
+                gameSettings,
+                saveName,
+            )
         case _:
-            inp = main_menu_input_handler(input
-                                          ("please pick on of our options\n")
-                                          )
+            inp = main_menu_input_handler(input("please pick on of our options\n"))
 
 
 def menu_handler(loaded_data):
@@ -100,7 +109,7 @@ def print_save_menu(all_saves):
             print("please select a save file by index")
 
 
-def main_game_loop(days, money, cityData, stationData, trainData, routeData):
+def main_game_loop(days, money, cityData, stationData, trainData, routeData, saveName):
     while money > -10000:
         days += 1
         # Show where each train is if there are trains
@@ -120,10 +129,14 @@ def main_game_loop(days, money, cityData, stationData, trainData, routeData):
                 progress += "X"
 
                 print(f"Train {train["name"]}: {progress}")
-        menu = main_menu_input_handler(input(f"""
+        menu = main_menu_input_handler(
+            input(
+                f"""
     money: {money} | trains: {len(trainData)} | stations: {len(stationData)} | routes: {len(routeData)} | cities: {len(cityData)} | day: {days}
     new action:
-    """))
+    """
+            ),
+        )
         if menu == "q":
             break
 
@@ -152,6 +165,9 @@ def main():
     global trainData
     global routeData
     global money
+    global saveName
+    global days
+    global gameSettings
     loaded_data = data.load_game_data()
     loaded_save_data = {}
     while True:
@@ -159,15 +175,17 @@ def main():
         if not loaded_save_data:
             pass
         else:
+            saveName = loaded_save_data["name"]
             days = loaded_save_data["days"]
-            money = loaded_save_data["gameSettings"]["startingMoney"]
+            money = loaded_save_data["money"]
             cityData = loaded_save_data["cities"]
             stationData = loaded_save_data["stations"]
             trainData = loaded_save_data["trains"]
             routeData = loaded_save_data["routes"]
-
-            main_game_loop(days, money, cityData,
-                           stationData, trainData, routeData)
+            gameSettings = loaded_save_data["gameSettings"]
+            main_game_loop(
+                days, money, cityData, stationData, trainData, routeData, saveName
+            )
 
             print("You ran out of money!")
             print("Game Over")
