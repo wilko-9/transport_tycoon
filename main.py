@@ -2,7 +2,6 @@ import data
 import cities
 import passangers
 import economy
-import settings
 from station import stations_menu
 from route import routes_menu
 from trains import trains_menu, move_train
