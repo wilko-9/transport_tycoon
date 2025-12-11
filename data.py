@@ -102,7 +102,7 @@ def city_data():
 
 """
 loads in the current game save data
-TODO:  
+TODO:
     - check for if there is no file
     - check for in correct data
 """
@@ -122,7 +122,7 @@ def load_game_data():
 
 """
 condenses all data to be send to the save file
-TODO:  
+TODO:
     - still needs validation of data
 """
 
@@ -157,3 +157,16 @@ def write_save_data(
         save = file_directory + "/saves.json"
     with open(save, "w") as f:
         f.write(saveWrite)
+
+
+def in_memory_save(name, setting, cities):
+    return {
+        "name": name,
+        "days": 0,
+        "money": setting["startingMoney"],
+        "gameSettings": setting,
+        "cities": cities,
+        "stations": {},
+        "routes": {},
+        "trains": {},
+    }

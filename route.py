@@ -67,7 +67,6 @@ def add_rout(routes, stations):
 def edit_route(routes):
     routeId = input(
         "Please enter the ID of the route that you would like to edit: ")
-    
     if routeId in routes:
         print(routeId)
         if input("would you like to give the the route a new name? (yes/no): ").lower() == "yes":

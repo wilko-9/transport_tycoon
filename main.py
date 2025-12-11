@@ -2,6 +2,7 @@ import data
 import cities
 import passangers
 import economy
+import settings
 from station import stations_menu
 from route import routes_menu
 from trains import trains_menu, move_train
@@ -65,6 +66,8 @@ def menu_handler(loaded_data):
             case "0":
                 return print_save_menu(loaded_data)
                 break
+            case "1":
+                return new_save()
             case "q" | "Q":
                 exit()
             case _:
@@ -161,6 +164,16 @@ def main_game_loop(days, money, cityData, stationData, trainData, routeData, sav
         print(f"Your profit today was {profit}")
 
 
+def new_save(): 
+    save_name = input("give your save a name: ")
+    setting = settings.settings_menu()
+    print("making cities")
+    city = {}
+    city = cities.new_city(city)
+    city = cities.new_city(city)
+    return data.in_memory_save(save_name, setting, city)
+
+
 def main():
     global cityData
     global stationData
@@ -188,7 +201,6 @@ def main():
             main_game_loop(
                 days, money, cityData, stationData, trainData, routeData, saveName
             )
-
             print("You ran out of money!")
             print("Game Over")
 
