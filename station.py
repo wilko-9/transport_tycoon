@@ -1,95 +1,145 @@
-from data import city_data
+import settings
+
+class Station:
+    def __init__(self, city, name, platforms):
+        self.city = city
+        self.name = name
+        self.platforms = platforms
+        self.tier = 0
+        self.waiting_passengers = 0
+        self.amount_of_routes = 0
+        self.age = 0
+        # calculate initial cost for reference (used when selling)
+        self.cost = settings.stationPrice + (platforms -1) * settings.platformPrice
+
+    def edit_station(self):
+        print(f"Editing station '{self.name}' in city '{self.city.name}'")
+        new_name = input("Enter new name (or leave blank to keep current): ").strip()
+        if new_name:
+            self.name = new_name
+
+        add_platforms = input("Enter number of extra platforms to add (or 0 to skip): ").strip()
+        if add_platforms.isdigit() and int(add_platforms) > 0:
+            num_platforms = int(add_platforms)
+            self.platforms += num_platforms
+            self.cost += num_platforms * settings.platformPrice
+            print(f"{num_platforms} platforms added. Total platforms: {self.platforms}")
+        else:
+            print("No platforms added.")
+
+    def delete_station(self, stations, money):
+        """Delete this station and refund the user based on saleValue."""
+        refund = int(self.cost * settings.saleValue / 100)
+        money += refund
+        print(f"Station '{self.name}' deleted. You got ${refund} back.")
+        self.city.station = None
+        if self in stations:
+            stations.remove(self)
+        return money
+
+    def spawn_passengers(self):
+        if self.amount_of_routes > 0:
+            waiting = self.waiting_passengers + (self.city.population / 10) / (1 + self.waiting_passengers)
+            self.waiting_passengers = int(waiting)
 
 
-def stations_menu(stations, city):
-    print("stations")
-    print("-"*66)
-    print(
-        f"|{"station name":<20} | {"waiting passengers":>20}|{"amount of routes":>20}|")
-    print("-"*66)
-    for station in stations.values():
-        print(
-            f"|{station["name"]:<20} | {station["waitingPassangers"]:>20}|{station["amountOfRoutes"]:>20}|")
-    print("-"*66)
-    print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")
-    inp = input()
+def stations_menu(stations, cities, money):
+    while True:
+        print("\nStations Menu")
+        print("-" * 66)
+        print(f"|{'Station Name':<20} | {'City':<20} | {'Platforms':>10} |")
+        print("-" * 66)
+        for station in stations:
+            print(f"|{station.name:<20} | {station.city.name:<20} | {station.platforms:>10} |")
+        print("-" * 66)
+        print("Type 'q' to go back | 1 to add | 2 to edit | 3 to delete")
+        choice = input("> ").strip().lower()
 
-    match inp:
-        case "q":
-            pass
-        case "1" | "add":
-            add_station(stations, city)
-        case "2" | "edit":
-            edit_station()
-        case "3" | "delete":
-            delete_station(stations, city)
-        case _:
-            stations_menu(stations, city)
+        match choice:
+            case "1" | "add":
+                # Add new station
+                cities_no_station = [city for city in cities if city.station is None]
 
+                if not cities_no_station:
+                    print("All cities already have stations. Cannot add a new station.")
+                    continue
 
-def add_station(stations, city):
-    cityNoStation = []
-    index = 0
-    for cityI in city_data():
-        if not city_data()[cityI]["hasStation"]:
-            cityNoStation.append(cityI)
-            print(f"ID: {index} City name: {str(city_data()[cityI]["name"])}")
-            index += 1
-    inp = input("please select a index\n")
-    if inp == "q":
-        pass
-    elif not inp.isdigit():
-        print("please chose a proper option")
-        add_station(stations, city)
-    elif int(inp) < len(cityNoStation):
-        cityId = cityNoStation[int(inp)]
-        StationsAmmount = int(list(stations)[-1]) + 1
-        name = 'test' + str(StationsAmmount)
-        stations.update({
-            StationsAmmount: {
-                "name": name,
-                "cityId": cityId,
-                "waitingPassangers": 0,
-                "amountOfRoutes": 0,
-                "age": 0
-            }})
-        city.update({
-            cityId: {
-                "name": city[cityNoStation[int(inp)]]["name"],
-                "population":  city[cityNoStation[int(inp)]]["population"],
-                "hasStation": True,
-                "station": StationsAmmount
-            }})
-        return stations, city
-    else:
-        print("please chose a proper option")
-        add_station(stations, city)
+                print("Select a city to add a station (q to cancel):")
+                for idx, city in enumerate(cities_no_station):
+                    print(f"{idx}: {city.name} (Population: {city.population})")
 
+                city_choice = input("> ").strip()
+                if city_choice.lower() == "q":
+                    continue
+                if not city_choice.isdigit() or int(city_choice) >= len(cities_no_station):
+                    print("Invalid selection.")
+                    continue
 
-def edit_station():
-    print("station has been edited")
+                selected_city = cities_no_station[int(city_choice)]
+                station_name = input("Enter station name: ").strip()
+                platforms = int(input("Enter number of platforms: ").strip())
 
+                total_cost = settings.stationPrice + (platforms -1) * settings.platformPrice
+                if money < total_cost:
+                    print(f"Not enough money. This station costs ${total_cost}, you have ${money}.")
+                    continue
 
-def delete_station(stations, city):
-    listOfStations = []
-    for station in stations:
-        listOfStations.append(station)
-        print(
-            f"index: {station} \t | station name: {stations[station]["name"]}")
-    inp = input("give a station index to delete\n")
-    if inp == "q":
-        pass
-    elif not inp.isdigit():
-        print("please give a proper index\n")
-        delete_station(stations, city)
-    else:
-        the_city = str(stations[listOfStations[int(inp)]]["cityId"])
-        city.update({
-            the_city: {
-                "name": city[the_city]["name"],
-                "population":  city[the_city]["population"],
-                "hasStation": False,
-            }})
-        stations.pop(inp)
-        print("station deleted \n")
-        return stations, city
+                money -= total_cost
+                new_station = Station(selected_city, station_name, platforms)
+                selected_city.station = new_station
+                stations.append(new_station)
+                print(f"Station '{station_name}' added to city '{selected_city.name}'. Remaining money: ${money}")
+
+            case "2" | "edit":
+                # Edit an existing station
+                if not stations:
+                    print("No stations to edit.")
+                    continue
+                print("Select a station to edit (q to cancel):")
+                for idx, station in enumerate(stations):
+                    print(f"{idx}: {station.name} (City: {station.city.name}, Platforms: {station.platforms})")
+
+                station_choice = input("> ").strip()
+                if station_choice.lower() == "q":
+                    continue
+                if not station_choice.isdigit() or int(station_choice) >= len(stations):
+                    print("Invalid selection.")
+                    continue
+
+                selected_station = stations[int(station_choice)]
+                # Editing may cost extra for new platforms
+                old_money = money
+                selected_station.edit_station()
+                money_spent = selected_station.cost - (settings.stationPrice + selected_station.platforms * settings.platformPrice)
+                if money_spent > money:
+                    print("Not enough money to add platforms. Reverting changes.")
+                    # Revert platform changes
+                    selected_station.platforms -= money_spent // settings.platformPrice
+                    selected_station.cost -= money_spent
+                else:
+                    money -= money_spent
+                    print(f"Station edited. Remaining money: ${money}")
+
+            case "3" | "delete":
+                # Delete a station
+                if not stations:
+                    print("No stations to delete.")
+                    continue
+                print("Select a station to delete (q to cancel):")
+                for idx, station in enumerate(stations):
+                    print(f"{idx}: {station.name} (City: {station.city.name})")
+                station_choice = input("> ").strip()
+                if station_choice.lower() == "q":
+                    continue
+                if not station_choice.isdigit() or int(station_choice) >= len(stations):
+                    print("Invalid selection.")
+                    continue
+
+                selected_station = stations[int(station_choice)]
+                money = selected_station.delete_station(stations, money)
+                print(f"Remaining money: ${money}")
+
+            case "q":
+                break
+
+    return money

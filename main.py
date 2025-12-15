@@ -1,208 +1,210 @@
-import data
-import cities
-import passangers
-import economy
+import random
+import os
+import pickle
 import settings
 from station import stations_menu
 from route import routes_menu
-from trains import trains_menu, move_train
-import random
+from trains import trains_menu, move_trains
+from cities import City, city_logic
+from economy import maintenance
 
+SAVE_FOLDER = "saves"
+
+
+# Save / Load Functions
+
+def save_game(save_name, days, money, city_list, station_list, train_list, route_list, settings_data):
+    if not os.path.exists(SAVE_FOLDER):
+        os.makedirs(SAVE_FOLDER)
+    file_path = os.path.join(SAVE_FOLDER, f"{save_name}.pkl")
+    with open(file_path, "wb") as f:
+        pickle.dump({
+            "days": days,
+            "money": money,
+            "cities": city_list,
+            "stations": station_list,
+            "trains": train_list,
+            "routes": route_list,
+            "settings": settings_data
+        }, f)
+    print(f"Game saved as '{save_name}'.")
+
+
+def load_saves():
+    if not os.path.exists(SAVE_FOLDER):
+        return {}
+    saves = {}
+    for file in os.listdir(SAVE_FOLDER):
+        if file.endswith(".pkl"):
+            save_name = file.replace(".pkl", "")
+            saves[save_name] = file
+    return saves
+
+
+def load_game(save_name):
+    file_path = os.path.join(SAVE_FOLDER, f"{save_name}.pkl")
+    if not os.path.exists(file_path):
+        print("Save not found.")
+        return None
+    with open(file_path, "rb") as f:
+        data = pickle.load(f)
+    return data
+
+
+def load_game_menu():
+    saves = load_saves()
+    if not saves:
+        print("No saves found.")
+        return None
+    while True:
+        print("Available saves:")
+        for save_name in saves:
+            print(f"- {save_name}")
+        choice = input("Select a save name (or 'q' to cancel): ").strip()
+        if choice.lower() == "q":
+            return None
+        if choice in saves:
+            return load_game(choice)
+        print("Invalid selection.")
+
+
+# Main Menu Helpers
 
 def is_input_validation(inp) -> bool:
-    for c in inp:
-        if c.isdigit() or c.isalpha():
-            continue
-        else:
-            return False
-    return True
+    return all(c.isalnum() for c in inp)
 
 
-def main_menu_input_handler(inp, moneySave):
-    inp = inp.lower()
-    if not is_input_validation(inp):
-        main_menu_input_handler(
-            input("please dont use any spaces or special charcters\n")
-        )
-    match inp:
-        case "q" | "Q":
-            print("quiting\n")
-            return "q"
-        case "":
-            pass
-        case "0" | "help":
-            print_help()
-        case "1" | "city":
-            cities.cities_menu(cityData)
-        case "2" | "station":
-            stations_menu(stationData, cityData)
-        case "3" | "train":
-            # ToDo: set new trainData in the function itself. not here
-            global trainData
-            trainData = trains_menu(trainData, routeData, money)
-        case "4" | "route":
-            routes_menu(routeData, stationData, trainData)
-        case "S" | "s" | "save" | "SAVE":
-            print(moneySave)
-            data.write_save_data(
-                cityData,
-                stationData,
-                routeData,
-                trainData,
-                days,
-                moneySave,
-                gameSettings,
-                saveName,
-            )
-        case _:
-            inp = main_menu_input_handler(input("please pick on of our options\n"))
-
-
-def menu_handler(loaded_data):
+def get_valid_input(prompt, allowed_inputs):  # TODO: use everywhere
     while True:
-        print_main_menu()
-        user_input = input("input? \n")
-        match user_input:
-            case "0":
-                return print_save_menu(loaded_data)
-                break
-            case "1":
-                return new_save()
-            case "q" | "Q":
-                exit()
-            case _:
-                pass
+        user_input = input(prompt).strip()
+        if user_input in allowed_inputs:
+            return user_input
+        else:
+            print(f"Invalid input. Please enter one of: {', '.join(allowed_inputs)}")
 
 
 def print_help():
-    print("This is the list of all commands")
-    print("-" * 67)
-    print(f"|{'index':>7} | {"command":>12} | {"description":>40}|")
-    print("-" * 67)
-    print(f"|{'0':>7} | {"Help":>12} | {"Lists all commands":>40}|")
-    print(f"|{'1':>7} | {"Cities":>12} | {"Opens the cities menu":>40}|")
-    print(f"|{'2':>7} | {"Stations":>12} | {"Opens the stations menu":>40}|")
-    print(f"|{'3':>7} | {"Trains":>12} | {"Opens the routes menu":>40}|")
-    print(f"|{'4':>7} | {"Routes":>12} | {"Opens the trains menu":>40}|")
-    print(f"|{'s':>7} | {"Save":>12} | {"Saves the current state of the game":>40}|")
-    print(f"|{'q':>7} | {"Quit":>12} | {"Quits the game or the current menu":>40}|")
-    print("-" * 67)
-    return main_menu_input_handler(input("pick a input"))
+    print("Commands:")
+    print("0: Help | 1: Cities | 2: Stations | 3: Trains | 4: Routes | 5: Next Day | s: Save | q: Quit")
 
 
-def print_main_menu():
-    print("main menu")
-    print("-" * 24)
-    print(f"|{'0':>7} | {"load game":>12}|")
-    print(f"|{'1':>7} | {"new game":>12}|")
-    print(f"|{'q':>7} | {"quite":>12}|")
-    print("-" * 24)
+def main_menu_input_handler(inp, city_list, station_list, route_list, train_list, money, days, settings_data):
+    inp = inp.lower().strip()
+    if not is_input_validation(inp):
+        return main_menu_input_handler(
+            input("Please don't use spaces or special characters:\n"),
+            city_list, station_list, route_list, train_list, money, days, settings_data
+        )
+
+    match inp:
+        case "q":
+            case = get_valid_input("would you like to save and quit? (1) yes (2) no", ["1", "2"])
+            if case == "1":
+                save_name = input("Enter save name: ").strip()
+                save_game(save_name, days, money, city_list, station_list, train_list, route_list, settings_data)
+            print("Quitting...")
+            return "q", city_list, station_list, route_list, train_list, money, days
+        case "0" | "help":
+            print_help()
+        case "1" | "city":
+            from cities import cities_menu
+            cities_menu(city_list)
+        case "2" | "station":
+            money = stations_menu(station_list, city_list, money)
+        case "3" | "train":
+            money = trains_menu(train_list, route_list, money)
+        case "4" | "route":
+            routes_menu(route_list, station_list, train_list)
+        case "5" | "next day":
+            return None, city_list, station_list, route_list, train_list, money, days
+        case "s":
+            save_name = input("Enter save name: ").strip()
+            save_game(save_name, days, money, city_list, station_list, train_list, route_list, settings_data)
+        case _:
+            print("Invalid input. Returning to menu")
+
+    return main_menu_input_handler(
+                input("Pick an option:\n"),
+                city_list, station_list, route_list, train_list, money, days, settings_data
+            )
 
 
-def print_save_menu(all_saves):
-    while True:
-        for save in all_saves:
-            print(save, all_saves[save]["name"])
-        user_input = input("select save: ")
-        if user_input in all_saves:
-            print("game start")
-            return all_saves[user_input]
-        elif user_input == "q" or user_input == "Q":
-            break
-        else:
-            print("please select a save file by index")
+# Game Loop
 
-
-def main_game_loop(days, money, cityData, stationData, trainData, routeData, saveName):
+def main_game_loop(city_list, station_list, train_list, route_list, money, days, settings_data):
+    print(city_list, station_list, train_list, route_list, money, days, settings_data)
     while money > -10000:
         days += 1
-        # Show where each train is if there are trains
-        if len(trainData) > 0:
-            for train in trainData.values():
-                percentage = train["metersOnRoute"]
-                route = routeData[str(train["currentRouteId"])]
-                num_segments = 50  # Number of track spaces
-                train_pos = int((percentage / 100) * num_segments)
 
-                progress = "X"
-                for i in range(1, num_segments + 1):
-                    if i == train_pos:
-                        progress += "T"
-                    else:
-                        progress += "-"
-                progress += "X"
+        # Update cities (growth & spawn passengers)
+        city_logic(city_list)
 
-                print(f"Train {train["name"]}: {progress}")
-        menu = main_menu_input_handler(
-            input(
-                f"""
-    money: {money} | trains: {len(trainData)} | stations: {len(stationData)} | routes: {len(routeData)} | cities: {len(cityData)} | day: {days}
-    new action:
-    """
-            ),
-            money,
+        # Display train progress
+        for train in train_list:
+            if train.route:
+                num_segments = 50
+                train_pos = int((train.percentage_route / 100) * num_segments)
+                progress = "X" + "".join(
+                    ["T" if i == train_pos else "-" for i in range(1, num_segments + 1)]
+                ) + "X"
+                print(f"Train {train.name}: {progress}")
+
+        # Main menu
+        menu, city_list, station_list, route_list, train_list, money, days = main_menu_input_handler(
+            input(f"""
+Money: {money} | Trains: {len(train_list)} | Stations: {len(station_list)} | Routes: {len(route_list)} | Cities: {len(city_list)} | Day: {days}
+New action:
+"""),
+            city_list, station_list, route_list, train_list, money, days, settings_data
         )
         if menu == "q":
             break
 
-        if random.randint(0, 500) == 1:
-            cityData = cities.new_city(cityData)
+        # Move trains
+        money = move_trains(train_list, money)
 
-        if random.randint(0, 20) == 1:
-            # ToDo: add some logic to this so cities dont actually randomly grow. Let them grow on a condition.
-            cityData = cities.grow_city(cityData)
-
-        oldMoney = money
-        trainData, money = move_train(trainData, money, stationData, routeData)
-
-        stationData = passangers.spawn_passangers(cityData, stationData)
-
-        maintenance = economy.maintenance(stationData, trainData, routeData)
-        money -= maintenance
-        profit = money - oldMoney
-        print(f"Your maintenance cost today was {maintenance}")
-        print(f"Your profit today was {profit}")
+        # Maintenance
+        maintenance_cost = maintenance(station_list, train_list, route_list)
+        money -= maintenance_cost
+        print(f"Maintenance cost today: {maintenance_cost}")
 
 
-def new_save(): 
-    save_name = input("give your save a name: ")
-    setting = settings.settings_menu()
-    print("making cities")
-    city = {}
-    city = cities.new_city(city)
-    city = cities.new_city(city)
-    return data.in_memory_save(save_name, setting, city)
+def start_new_game():
+    money = settings.startingMoney
+    days = 0
+    city_list = [City(0, random.randint(0, 100), random.randint(0, 100)) for _ in range(5)]
+    station_list = []
+    train_list = []
+    route_list = []
+
+    settings_data = {}
+    main_game_loop(city_list, station_list, train_list, route_list, money, days, settings_data)
 
 
 def main():
-    global cityData
-    global stationData
-    global trainData
-    global routeData
-    global money
-    global saveName
-    global days
-    global gameSettings
-    loaded_data = data.load_game_data()
-    loaded_save_data = {}
-    while True:
-        loaded_save_data = menu_handler(loaded_data)
-        if not loaded_save_data:
-            pass
-        else:
-            saveName = loaded_save_data["name"]
-            days = loaded_save_data["days"]
-            money = loaded_save_data["money"]
-            cityData = loaded_save_data["cities"]
-            stationData = loaded_save_data["stations"]
-            trainData = loaded_save_data["trains"]
-            routeData = loaded_save_data["routes"]
-            gameSettings = loaded_save_data["gameSettings"]
+    print("Welcome to Transport Simulator!")
+    choice = input("Start (1) New Game or (2) Load Game? ").strip()
+    if choice == "2":
+        save_data = load_game_menu()
+        if save_data:
             main_game_loop(
-                days, money, cityData, stationData, trainData, routeData, saveName
+                save_data["cities"],
+                save_data["stations"],
+                save_data["trains"],
+                save_data["routes"],
+                save_data["money"],
+                save_data["days"],
+                save_data["settings"]
             )
-            print("You ran out of money!")
-            print("Game Over")
+        else:
+            new_choice = input("No save found. Would you like to start a new game instead? (1) Yes or (2) No").strip()
+            if new_choice == "1":
+                start_new_game()
+            else:
+                print("Quitting game")
+    else:
+        start_new_game()
 
 
-main()
+if __name__ == "__main__":
+    main()

@@ -1,80 +1,149 @@
+class Route:
+    route_counter = 0  # class variable to auto-assign route IDs
+
+    def __init__(self, name=None, stations=None):
+        if stations is None:
+            stations = []
+        self.id = Route.route_counter
+        Route.route_counter += 1
+
+        self.name = name if name else f"Route {self.id}"
+        self.stations = stations  # list of Station objects or None
+        self.trains = []          # list of train objects
+        self.expected_people = 0
+        self.age = 0
+
+    def add_station(self, station):
+        """Add a station to the route if not already included."""
+        if station not in self.stations:
+            self.stations.append(station)
+            print(f"Station '{station.name}' added to route '{self.name}'.")
+        else:
+            print(f"Station '{station.name}' is already on the route.")
+
+    def remove_station(self, station):
+        """Remove a station from the route."""
+        if station in self.stations:
+            self.stations.remove(station)
+            print(f"Station '{station.name}' removed from route '{self.name}'.")
+        else:
+            print(f"Station '{station.name}' is not on the route.")
+
+    def calculate_passengers(self, trains):
+        """Calculate total passengers on the route based on assigned trains."""
+        total = 0
+        for train in self.trains:
+            # train can be a Train object or an ID mapping to the trains dictionary
+            if isinstance(train, int) and str(train) in trains:
+                total += trains[str(train)]["CurrentPeople"]
+            elif hasattr(train, "current_people"):
+                total += train.current_people
+        return total
+
+    def __str__(self):
+        return f"{self.name} | Stations: {len(self.stations)} | Trains: {len(self.trains)}"
+
+
+# -----------------------------
+# Updated menu functions
+# -----------------------------
+
 def routes_menu(routes, stations, trains):
-    print("routes:")
-    print("-" * 74)
-    print(f"|{"id":<10}|{"name":<20} | {"people traveling":>20} | {"trains on route":>15}|")
-    print("-" * 74)
-    total = 0
+    print("Routes:")
+    print("-" * 63)
+    print(f"|{'Name':<20} | {'People Traveling':>20} | {'Trains on Route':>15}|")
+    print("-" * 63)
+
+    total_passengers = 0
     for route in routes:
-        passengersOnRoute = 0
-        for train in routes[route]['trains']:
-            passengersOnRoute += trains[str(train)]["CurrentPeople"]
-        print(
-            f"|{route:<10}|{routes[route]['name']:<20} | {passengersOnRoute:>20} | {len(routes[route]['trains']):>15}|")
-        total += passengersOnRoute
-    print("-" * 74)
-    print(f"{total} total passangers")
-    print("Type 'q' to go back| 1 or 'add' add | 2 or 'edit' to edit  | 3 or 'delete' to delete")
+        passengers = route.calculate_passengers(trains)
+        print(f"|{route.name:<20} | {passengers:>20} | {len(route.trains):>15}|")
+        total_passengers += passengers
 
-    inp = input()
+    print("-" * 63)
+    print(f"{total_passengers} total passengers")
+    print("Type 'q' to go back | 1 or 'add' add | 2 or 'edit' to edit | 3 or 'delete' to delete")
 
-    match inp:
+    choice = input("> ").strip().lower()
+    match choice:
         case "q":
-            pass
+            return
         case "1" | "add":
-            add_rout(routes, stations)
+            add_route(routes, stations)
         case "2" | "edit":
             edit_route(routes)
         case "3" | "delete":
-            delete_route()
+            delete_route(routes)
         case _:
             routes_menu(routes, stations, trains)
 
 
-def add_rout(routes, stations):
-    complete_station_list = []
-    add_station_list = []
-    want_to_add_station = True
-    for station in stations:
-        complete_station_list.append(station)
-        print(station, stations[station]["name"])
-    while want_to_add_station:
-        inp = input("add station by index, press q to stop adding stations")
-        if inp == "q" or len(complete_station_list) == len(add_station_list):
-            want_to_add_station = False
-        elif not inp.isdigit():
-            print("please put in a number")
-        elif int(inp) > len(add_station_list):
-            print("please put in a number thats within the index range")
-        elif complete_station_list[int(inp)] in add_station_list:
-            print("please dont add a station twice")
+def add_route(routes, stations):
+    """Create a new route by selecting stations."""
+    route_stations = []
+    route_name = input("give your route a name.")
+    while True:
+        if len(stations) > 0:
+            print("Available stations:")
+            for idx, station in enumerate(stations):
+                print(f"{idx}: {station.name}")
+
+            inp = input("Add station by index (q to finish): ").strip()
+            if inp.lower() == "q":
+                break
+            if not inp.isdigit() or int(inp) >= len(stations):
+                print("Invalid input.")
+                continue
+            station = stations[int(inp)]
+            if station in route_stations:
+                print("Station already added to route.")
+                continue
+            route_stations.append(station)
+            print(f"Station '{station.name}' added to route.")
         else:
-            add_station_list.append(complete_station_list[int(inp)])
-            print("station has been added")
-    routesAmmount = int(list(routes)[-1]) + 1
-    name = "route " + str(routesAmmount)
-    routes.update({
-        routesAmmount: {
-            "name": name,
-            "expectedPeople": 100,
-            "stations": add_station_list,
-            "trains": [],
-        }
-    })
-    print("rout has been added")
-    return routes
+            break
+
+    new_route = Route(name=route_name, stations=route_stations)
+    routes.append(new_route)
+    print(f"Route '{new_route.name}' has been created.")
+    print("returning to menu")
+    return new_route
 
 
 def edit_route(routes):
-    routeId = input(
-        "Please enter the ID of the route that you would like to edit: ")
-    if routeId in routes:
-        print(routeId)
-        if input("would you like to give the the route a new name? (yes/no): ").lower() == "yes":
-            newName = input("give the route a new name")
-            routes[routeId]["name"] = newName
-    else:
-        print("The given ID was not found. Please try again.")
-        edit_route(routes)
+    if not routes:
+        print("No routes to edit.")
+        return
+    print("Select a route to edit:")
+    for idx, route in enumerate(routes):
+        print(f"{idx}: {route}")
 
-def delete_route():
-    print("route has been deleted")
+    inp = input("> ").strip()
+    if not inp.isdigit() or int(inp) >= len(routes):
+        print("Invalid input.")
+        return
+
+    selected_route = routes[int(inp)]
+    print(f"Editing route '{selected_route.name}'")
+    # Example: rename route
+    new_name = input("Enter new name (leave blank to keep current): ").strip()
+    if new_name:
+        selected_route.name = new_name
+        print(f"Route renamed to '{selected_route.name}'.")
+
+
+def delete_route(routes):
+    if not routes:
+        print("No routes to delete.")
+        return
+    print("Select a route to delete:")
+    for idx, route in enumerate(routes):
+        print(f"{idx}: {route}")
+
+    inp = input("> ").strip()
+    if not inp.isdigit() or int(inp) >= len(routes):
+        print("Invalid input.")
+        return
+
+    removed_route = routes.pop(int(inp))
+    print(f"Route '{removed_route.name}' has been deleted.")
