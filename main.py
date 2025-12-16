@@ -132,7 +132,6 @@ def main_menu_input_handler(inp, city_list, station_list, route_list, train_list
 # Game Loop
 
 def main_game_loop(city_list, station_list, train_list, route_list, money, days, settings_data):
-    print(city_list, station_list, train_list, route_list, money, days, settings_data)
     while money > -10000:
         days += 1
 
